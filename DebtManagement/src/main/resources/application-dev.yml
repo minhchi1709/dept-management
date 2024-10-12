@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/debt_management
+    url: jdbc:postgresql://localhost:5432/debt_management?createDatabaseIfNotExist=true
     username: postgres
     password: diepminhchi1617
     driver-class-name: org.postgresql.Driver
