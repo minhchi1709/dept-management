@@ -10,6 +10,7 @@ import vn.diepgia.mchis.DebtManagement.models.Customer;
 import vn.diepgia.mchis.DebtManagement.services.CustomerService;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("customers")
@@ -18,17 +19,27 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private static final Logger LOGGER = Logger.getLogger(CustomerController.class.getName());
 
     @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomers() {
+        LOGGER.info("Get all customers");
         return ResponseEntity.ok(customerService.getAllCustomers());
+    }
+
+    @GetMapping("/customer-ids")
+    public ResponseEntity<List<String>> getAllCustomerIds() {
+        LOGGER.info("Get all customer IDs");
+        return ResponseEntity.ok(customerService.getAllCustomerIds());
     }
 
     @PostMapping
     public ResponseEntity<?> createCustomer(@RequestBody Customer request) {
         try {
+            LOGGER.info("Attempting to create customer ID: " + request.getId());
             return ResponseEntity.ok(customerService.createCustomer(request));
         } catch (RuntimeException e) {
+            LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -36,8 +47,10 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable String id) {
         try {
+            LOGGER.info("Attempting to get customer ID: " + id);
             return ResponseEntity.ok(customerService.getCustomerById(id));
         } catch (EntityNotFoundException e) {
+            LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -48,8 +61,10 @@ public class CustomerController {
             @RequestBody Customer request
     ) {
         try {
+            LOGGER.info("Attempting to update customer ID: " + id);
             return ResponseEntity.ok(customerService.updateCustomer(id, request));
         } catch (EntityNotFoundException e) {
+            LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -57,9 +72,11 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable String id) {
         try {
+            LOGGER.info(String.format("Attempting to deleting customer %s", id));
             customerService.deleteCustomer(id);
             return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
+            LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

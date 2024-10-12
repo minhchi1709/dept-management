@@ -13,5 +13,5 @@ public class InvoiceRequest {
     private String id;
     private String date;
     private String customerId;
-    private List<TransactionRequest> transactions;
+    private List<InvoiceLineRequest> invoiceLines;
 }

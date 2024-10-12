@@ -1,0 +1,123 @@
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="invoiceId" >
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field class="form-field">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Số hóa đơn</span>
+          </mat-label>
+          <input (keyup)="filter()" matInput [(ngModel)]="invoiceIdQuery" placeholder="170903">
+          <button mat-icon-button matSuffix (click)="clear('invoiceId')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let invoice"> {{ invoice.id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="customerId">
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field class="form-field">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Mã khách hàng</span>
+          </mat-label>
+          <input (keyup)="filter()" matInput [(ngModel)]="customerIdQuery" placeholder="dieptronghuy">
+          <button mat-icon-button matSuffix (click)="clear('customerId')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let invoice"> {{ invoice.customer.id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="province">
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field class="form-field">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Tỉnh/Thành phố</span>
+          </mat-label>
+          <input (keyup)="filter()" matInput [(ngModel)]="provinceQuery" placeholder="TPHCM">
+          <button mat-icon-button matSuffix (click)="clear('province')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let invoice"> {{ invoice.customer.province }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field [ngStyle]="{'width': !year? '100%' : (!month ? '50%' : '33%')}">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Năm</span>
+          </mat-label>
+          <input type="text" (keyup)="filter()" matInput [(ngModel)]="year" placeholder="2003">
+          <button mat-icon-button matSuffix (click)="clear('year')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field [ngStyle]="{'width': !month ? '50%' : '33%'}" *ngIf="year">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Tháng</span>
+          </mat-label>
+          <input type="text" (keyup)="filter()" matInput [(ngModel)]="month" placeholder="09">
+          <button mat-icon-button matSuffix (click)="clear('month')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field style="width: 33.3%" *ngIf="month">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Ngày</span>
+          </mat-label>
+          <input type="text" (keyup)="filter()" matInput [(ngModel)]="date" placeholder="17">
+          <button mat-icon-button matSuffix (click)="clear('date')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let invoice"> {{ dateService.formatDate(invoice.date || '') }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef> Tổng </th>
+      <td mat-cell *matCellDef="let invoice"> {{ currencyService.numberWithCommas(invoice.total) }} VND </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row
+        (click)="setInvoice(dataSource)"
+        *matRowDef="let dataSource; columns: columnsToDisplay"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+<div *ngIf="filteredInvoices.length == 1">
+  <app-invoice-detail [setInvoice]="invoice" [setDataSource]="invoiceLineDataSource"/>
+</div>
+
+<div *ngIf="showGraph">
+  <app-graph [graphTitle]="graphTitle" [input]="datapoints" />
+</div>

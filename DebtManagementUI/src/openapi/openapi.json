@@ -64,29 +64,13 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "updateSpecification",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "productRequest": {
-                    "$ref": "#/components/schemas/Product"
-                  },
-                  "specificationRequest": {
-                    "$ref": "#/components/schemas/Specification"
-                  }
-                }
+                "$ref": "#/components/schemas/Product"
               }
             }
           },
@@ -148,23 +132,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "transactionId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "option",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -176,8 +143,12 @@
                   "invoiceRequest": {
                     "$ref": "#/components/schemas/InvoiceRequest"
                   },
-                  "transactionRequest": {
-                    "$ref": "#/components/schemas/TransactionRequest"
+                  "removingLines": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int64"
+                    }
                   }
                 }
               }
@@ -360,7 +331,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Invoice"
+                    "$ref": "#/components/schemas/InvoiceResponse"
                   }
                 }
               }
@@ -389,7 +360,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "string"
                 }
               }
             }
@@ -544,12 +515,12 @@
         }
       }
     },
-    "/invoices/years": {
+    "/products/specifications": {
       "get": {
         "tags": [
-          "Invoice"
+          "Product"
         ],
-        "operationId": "getAllYears",
+        "operationId": "getAllSpecifications",
         "responses": {
           "200": {
             "description": "OK",
@@ -558,8 +529,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "integer",
-                    "format": "int32"
+                    "$ref": "#/components/schemas/Specification"
                   }
                 }
               }
@@ -568,23 +538,12 @@
         }
       }
     },
-    "/invoices/years/{year}": {
+    "/products/product-ids": {
       "get": {
         "tags": [
-          "Invoice"
+          "Product"
         ],
-        "operationId": "getAllInvoicesOfYear",
-        "parameters": [
-          {
-            "name": "year",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        "operationId": "getAllProductIds",
         "responses": {
           "200": {
             "description": "OK",
@@ -593,7 +552,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Invoice"
+                    "type": "string"
                   }
                 }
               }
@@ -602,111 +561,15 @@
         }
       }
     },
-    "/invoices/years/{year}/months": {
+    "/invoices/customers/{id}": {
       "get": {
         "tags": [
           "Invoice"
         ],
-        "operationId": "getAllMonthsOfYear",
+        "operationId": "getAllInvoicesOfCustomer",
         "parameters": [
           {
-            "name": "year",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/invoices/years/{year}/months/{month}": {
-      "get": {
-        "tags": [
-          "Invoice"
-        ],
-        "operationId": "getAllInvoicesOfMonth",
-        "parameters": [
-          {
-            "name": "year",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "month",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Invoice"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/invoices/years/{year}/months/{month}/customers/{customerId}": {
-      "get": {
-        "tags": [
-          "Invoice"
-        ],
-        "operationId": "getAllInvoicesOfMonthOfCustomer",
-        "parameters": [
-          {
-            "name": "year",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "month",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "customerId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -722,7 +585,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Invoice"
+                    "$ref": "#/components/schemas/InvoiceResponse"
                   }
                 }
               }
@@ -731,28 +594,51 @@
         }
       }
     },
-    "/invoices/years/{year}/customers/{customerId}": {
+    "/customers/customer-ids": {
       "get": {
         "tags": [
-          "Invoice"
+          "Customer"
         ],
-        "operationId": "getAllInvoicesOfYearOfCustomer",
+        "operationId": "getAllCustomerIds",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}/specifications/{specification-id}": {
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "operationId": "deleteSpecification",
         "parameters": [
           {
-            "name": "year",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "specification-id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -762,10 +648,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Invoice"
-                  }
+                  "type": "object"
                 }
               }
             }
@@ -813,6 +696,28 @@
           }
         }
       },
+      "InvoiceLineRequest": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "numberOfBoxes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "specificationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastModified": {
+            "type": "string"
+          }
+        }
+      },
       "InvoiceRequest": {
         "type": "object",
         "properties": {
@@ -825,33 +730,11 @@
           "customerId": {
             "type": "string"
           },
-          "transactions": {
+          "invoiceLines": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TransactionRequest"
+              "$ref": "#/components/schemas/InvoiceLineRequest"
             }
-          }
-        }
-      },
-      "TransactionRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "note": {
-            "type": "string"
-          },
-          "numberOfBoxes": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "productId": {
-            "type": "string"
-          },
-          "specification": {
-            "$ref": "#/components/schemas/Specification"
           }
         }
       },
@@ -904,21 +787,21 @@
             "type": "integer",
             "format": "int32"
           },
-          "transactions": {
+          "isPaid": {
+            "type": "boolean"
+          },
+          "invoiceLines": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Transaction"
+              "$ref": "#/components/schemas/InvoiceLine"
             }
           },
           "customer": {
             "$ref": "#/components/schemas/Customer"
-          },
-          "paid": {
-            "type": "boolean"
           }
         }
       },
-      "Transaction": {
+      "InvoiceLine": {
         "type": "object",
         "properties": {
           "id": {
@@ -936,8 +819,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "invoice": {
-            "$ref": "#/components/schemas/Invoice"
+          "specification": {
+            "$ref": "#/components/schemas/Specification"
           },
           "product": {
             "$ref": "#/components/schemas/Product"
@@ -957,6 +840,48 @@
           "amount": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "CustomerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          }
+        }
+      },
+      "InvoiceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "invoiceLines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLine"
+            }
+          },
+          "customer": {
+            "$ref": "#/components/schemas/CustomerResponse"
           }
         }
       }

@@ -1,16 +1,13 @@
 package vn.diepgia.mchis.DebtManagement.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,15 +19,23 @@ public class Invoice {
     @Id
     private String id;
     private LocalDate date;
-    private LocalDateTime lastModified;
-    private int total;
-    private int paidAmount;
-    private int rest;
-    private boolean isPaid;
+    private Integer total;
 
-    @OneToMany(mappedBy = "invoice")
-    private List<Transaction> transactions;
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    private List<InvoiceLine> invoiceLines;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "customer_id"
+    )
+    @JsonBackReference
     private Customer customer;
+
+    @Override
+    public String toString() {
+        return "Invoice " + id;
+    }
 }

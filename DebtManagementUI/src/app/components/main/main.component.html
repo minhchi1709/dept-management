@@ -1,3 +1,12 @@
-<app-create-product/>
-<app-create-customer/>
-<app-create-invoice/>
+
+<mat-tab-group>
+  <mat-tab label="Danh sách hóa đơn">
+    <app-invoice-list [input]="invoices"/>
+  </mat-tab>
+  <mat-tab label="Danh sách khách hàng">
+    <app-customer-list [input]="customers"/>
+  </mat-tab>
+  <mat-tab label="Danh sách sản phẩm">
+    <app-product-list [productList]="products"/>
+  </mat-tab>
+</mat-tab-group>

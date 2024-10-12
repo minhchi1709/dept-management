@@ -1,12 +1,68 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCustomer">
-  Customer
+
+
+<button mat-raised-button id="expand-button"
+        color="accent"
+        matTooltip="Mở bảng công cụ"
+        [matTooltipPosition]="'above'"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample">
+  <mat-icon style="margin-right: 0; margin-left: 0">arrow_forward_ios</mat-icon>
 </button>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createInvoice">
-  Invoice
-</button>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProduct">
-  Product
-</button>
+
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     style="width: 100px"
+     id="offcanvasExample">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <mat-list>
+      <mat-list-item class="button-container" style="padding-left:0; padding-right: 0">
+        <a mat-raised-button href="">
+          <mat-icon>home</mat-icon>
+        </a>
+      </mat-list-item>
+      <!-- Button trigger modal -->
+      <mat-list-item class="button-container" style="padding-left:0; padding-right: 0">
+        <button mat-raised-button
+                (click)="reset('invoice')"
+                data-bs-toggle="modal"
+                [matTooltipPosition]="'right'"
+                matTooltip="Thêm hóa đơn"
+                data-bs-target="#createInvoice">
+          <mat-icon>receipt_long</mat-icon>
+        </button>
+      </mat-list-item>
+      <!-- Button trigger modal -->
+      <mat-list-item class="button-container" style="padding-left:0; padding-right: 0">
+        <button mat-raised-button
+                data-bs-toggle="modal"
+                (click)="reset('customer')"
+                matTooltip="Thêm khách hàng"
+                [matTooltipPosition]="'right'"
+                data-bs-target="#createCustomer">
+          <mat-icon>person_add</mat-icon>
+        </button>
+      </mat-list-item>
+      <!-- Button trigger modal -->
+      <mat-list-item class="button-container" style="padding-left:0; padding-right: 0">
+        <button mat-raised-button
+                (click)="reset('product')"
+                matTooltip="Thêm sản phẩm"
+                [matTooltipPosition]="'right'"
+                data-bs-toggle="modal"
+                data-bs-target="#createProduct">
+          <mat-icon>inventory_2</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+<app-create-invoice/>
+<app-create-customer/>
+<app-create-product/>
+

@@ -1,0 +1,26 @@
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Xác nhận</h1>
+        <button mat-mini-fab
+                color="warn"
+                class="button-close"
+                data-bs-dismiss="modal"
+                matTooltip="Đóng"
+                aria-label="Close">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        Chắn chắn muốn xóa?
+      </div>
+      <div class="modal-footer">
+        <button mat-mini-fab color="accent" matTooltip="Xác nhận" data-bs-dismiss="modal" (click)="delete()">
+          <mat-icon>check_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

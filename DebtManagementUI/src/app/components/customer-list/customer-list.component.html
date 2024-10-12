@@ -1,0 +1,65 @@
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field class="form-field">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Mã khách hàng</span>
+          </mat-label>
+          <input (keyup)="filter()" matInput [(ngModel)]="idQuery" placeholder="dieptronghuy">
+          <button mat-icon-button matSuffix (click)="clear('id')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let customer"> {{ customer.id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Tên khách hàng </th>
+      <td mat-cell *matCellDef="let customer"> {{ customer.name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telephone">
+      <th mat-header-cell *matHeaderCellDef> Số điện thoại </th>
+      <td mat-cell *matCellDef="let customer"> {{ customer.telephone }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="province">
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field class="form-field">
+          <mat-label>
+            <mat-icon>
+              search
+            </mat-icon>
+            Tỉnh/Thành phố
+          </mat-label>
+          <input (keyup)="filter()" matInput [(ngModel)]="provinceQuery" placeholder="TPHCM">
+          <button mat-icon-button matSuffix (click)="clear('province')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let customer"> {{ customer.province }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row
+        data-bs-toggle="modal"
+        data-bs-target="#createCustomer"
+        (click)="setCustomer(dataSource)"
+        *matRowDef="let dataSource; columns: columnsToDisplay"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+<div style="margin-top: 5rem" *ngIf="filteredCustomers.length == 1">
+  <h1 style="text-align: center; font-weight: bold">Đơn hàng của {{customer.id}}</h1>
+  <app-invoice-list [input]="invoices"/>
+</div>

@@ -1,0 +1,86 @@
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell class="form-field-container" *matHeaderCellDef>
+        <mat-form-field class="form-field">
+          <mat-label>
+            <mat-icon aria-hidden="true">
+              search
+            </mat-icon>
+            <span cdk-visually-hidden>Mã sản phẩm</span>
+          </mat-label>
+          <input (keyup)="filter()" matInput [(ngModel)]="idQuery" placeholder="DG01">
+          <button mat-icon-button matSuffix (click)="clear()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let product"> {{ product.id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Tên sản phẩm </th>
+      <td mat-cell *matCellDef="let product"> {{ product.name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="specification">
+      <th mat-header-cell *matHeaderCellDef> Quy cách đóng gói sản phẩm </th>
+      <td mat-cell *matCellDef="let product"> {{product.specifications.length}} quy cách
+        <!--<table mat-table [dataSource]="product.specification">
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Giá tiền</th>
+            <td mat-cell *matCellDef="let specification"> {{ specification.price }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="unit">
+            <th mat-header-cell *matHeaderCellDef>Đơn vị tính</th>
+            <td mat-cell *matCellDef="let specification"> {{ specification.unit }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amountPerBox">
+            <th mat-header-cell *matHeaderCellDef>Số lượng mỗi thùng</th>
+            <td mat-cell *matCellDef="let specification"> {{ specification.amountPerBox }} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplaySpec"></tr>
+          <tr mat-row *matRowDef="let specification; columns: columnsToDisplaySpec"></tr>
+        </table>-->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row
+        data-bs-toggle="modal"
+        data-bs-target="#createProduct"
+        (click)="setProduct(dataSource)"
+        *matRowDef="let dataSource; columns: columnsToDisplay"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+<div class="table-container" style="margin-right: 10%; margin-top: 5rem" *ngIf="filteredProducts.length == 1">
+  <h2>Quy cách đóng gói {{ product.id }} </h2>
+  <table mat-table [dataSource]="dataSourceSpecifications">
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Giá tiền</th>
+      <td mat-cell *matCellDef="let specification"> {{ specification.price }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unit">
+      <th mat-header-cell *matHeaderCellDef>Đơn vị tính</th>
+      <td mat-cell *matCellDef="let specification"> {{ specification.unit }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amountPerBox">
+      <th mat-header-cell *matHeaderCellDef>Số lượng mỗi thùng</th>
+      <td mat-cell *matCellDef="let specification"> {{ specification.amountPerBox }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplaySpec"></tr>
+    <tr mat-row *matRowDef="let specification; columns: columnsToDisplaySpec"></tr>
+  </table>
+</div>
+

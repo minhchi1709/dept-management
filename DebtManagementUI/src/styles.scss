@@ -1,2 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+//@use '@angular/material' as mat;
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+//@include mat.core();
+
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0; font-family: sans-serif;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+.cdk-overlay-container {
+  z-index: 1070; // Higher than the modal's z-index
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+th {
+  font-weight: bold;
+}
+
+.table-container{
+  border: 1px solid lightgrey;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-left: 5rem;
+  margin-right: 5rem
+}
+.button-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0
+}
+.button-close{
+  padding: calc(var(--bs-modal-header-padding-y) * 0.5) calc(var(--bs-modal-header-padding-x) * 0.5);
+  margin: calc(-0.5 * var(--bs-modal-header-padding-y)) calc(-0.5 * var(--bs-modal-header-padding-x)) calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+}
+
+.form-field-container {
+  padding: 0
+}
+
+.form-field {
+  width: 100%
+}
+
+

@@ -1,5 +1,7 @@
 package vn.diepgia.mchis.DebtManagement.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -21,6 +23,6 @@ public class Product {
     private String id;
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Specification> specifications;
 }
