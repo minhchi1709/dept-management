@@ -208,7 +208,6 @@ export class CreateInvoiceComponent implements OnInit {
       },
       error: err => this.error = err.error
     })
-
   }
 
   updateDate(dateObject: any) {
