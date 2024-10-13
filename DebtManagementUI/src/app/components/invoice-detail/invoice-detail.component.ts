@@ -7,12 +7,12 @@ import {InvoiceLineRequest} from "../../api-services/models/invoice-line-request
 import {ProductService} from "../../api-services/services/product.service";
 import {Product} from "../../api-services/models/product";
 import {Specification} from "../../api-services/models/specification";
-import {Invoice} from "../../api-services/models/invoice";
 import {DateService} from "../../modules/debt-management/services/date-service/date.service";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {InvoiceResponse} from "../../api-services/models/invoice-response";
 
 @Component({
   selector: 'app-invoice-detail',
@@ -33,7 +33,7 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
   columnsToDisplay = ['productId', 'productName', 'specification', 'numOfBoxes', 'note'];
   products: Product[] = []
   specifications: Specification[] = []
-  invoice: Invoice = {}
+  invoice: InvoiceResponse = {}
 
   constructor(
     private productService: ProductService,
@@ -43,7 +43,7 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-        //throw new Error('Method not implemented.');
+
     }
 
   ngOnInit(): void {
@@ -67,7 +67,7 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
 
   getProductName(id: string): string {
     for (let product of this.products) {
-      if (product.id == id) {
+      if (product.productId == id) {
         return product.name? product.name : ''
       }
     }
@@ -80,7 +80,7 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
   }
 
   @Input()
-  set setInvoice(invoice: Invoice) {
+  set setInvoice(invoice: InvoiceResponse) {
     this.invoice = invoice
   }
 

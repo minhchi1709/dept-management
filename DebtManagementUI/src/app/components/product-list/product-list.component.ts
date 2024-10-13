@@ -68,7 +68,7 @@ export class ProductListComponent implements AfterViewInit, OnChanges {
       title: 'Chỉnh sửa sản phẩm',
       editMode: true
     })
-    this.idQuery = dataSource.id != undefined ? dataSource.id : ''
+    this.idQuery =  dataSource.productId || ''
     this.filter()
   }
 
@@ -76,8 +76,8 @@ export class ProductListComponent implements AfterViewInit, OnChanges {
     if (!this.idQuery) {
       this.filteredProducts = this.products
     } else {
-      this.filteredProducts = this.products.filter((p, i, a) => {
-        return p.id?.toLowerCase().includes(this.idQuery.toLowerCase())
+      this.filteredProducts = this.products.filter(p => {
+        return p.productId?.toLowerCase().includes(this.idQuery.toLowerCase())
       })
     }
     if (this.filteredProducts.length == 1) {

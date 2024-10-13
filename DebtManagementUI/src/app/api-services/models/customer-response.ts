@@ -1,7 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface CustomerResponse {
-  id?: string;
+  customerId?: string;
+  id?: number;
   name?: string;
   province?: string;
   telephone?: string;

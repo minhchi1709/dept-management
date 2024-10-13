@@ -118,58 +118,6 @@
         }
       }
     },
-    "/invoices/{invoiceId}": {
-      "put": {
-        "tags": [
-          "Invoice"
-        ],
-        "operationId": "updateInvoice",
-        "parameters": [
-          {
-            "name": "invoiceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "invoiceRequest": {
-                    "$ref": "#/components/schemas/InvoiceRequest"
-                  },
-                  "removingLines": {
-                    "type": "array",
-                    "items": {
-                      "type": "integer",
-                      "format": "int64"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/customers/{id}": {
       "get": {
         "tags": [
@@ -360,102 +308,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/invoices/{id}": {
-      "get": {
-        "tags": [
-          "Invoice"
-        ],
-        "operationId": "getInvoiceById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Invoice"
-        ],
-        "operationId": "payInvoice",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Invoice"
-        ],
-        "operationId": "deleteInvoice",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
                   "type": "object"
                 }
               }
@@ -554,6 +406,64 @@
                   "items": {
                     "type": "string"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{id}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "operationId": "getInvoiceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Invoice"
+        ],
+        "operationId": "deleteInvoice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -663,6 +573,10 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productId": {
             "type": "string"
           },
           "name": {
@@ -696,52 +610,14 @@
           }
         }
       },
-      "InvoiceLineRequest": {
-        "type": "object",
-        "properties": {
-          "note": {
-            "type": "string"
-          },
-          "numberOfBoxes": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "productId": {
-            "type": "string"
-          },
-          "specificationId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "lastModified": {
-            "type": "string"
-          }
-        }
-      },
-      "InvoiceRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "date": {
-            "type": "string"
-          },
-          "customerId": {
-            "type": "string"
-          },
-          "invoiceLines": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InvoiceLineRequest"
-            }
-          }
-        }
-      },
       "Customer": {
         "type": "object",
         "properties": {
           "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customerId": {
             "type": "string"
           },
           "name": {
@@ -771,24 +647,9 @@
             "type": "string",
             "format": "date"
           },
-          "lastModified": {
-            "type": "string",
-            "format": "date-time"
-          },
           "total": {
             "type": "integer",
             "format": "int32"
-          },
-          "paidAmount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rest": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isPaid": {
-            "type": "boolean"
           },
           "invoiceLines": {
             "type": "array",
@@ -824,22 +685,45 @@
           },
           "product": {
             "$ref": "#/components/schemas/Product"
-          },
-          "lastModified": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
-      "PaymentRequest": {
+      "InvoiceLineRequest": {
         "type": "object",
         "properties": {
+          "note": {
+            "type": "string"
+          },
+          "numberOfBoxes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "specificationId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "InvoiceRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
           "date": {
             "type": "string"
           },
-          "amount": {
-            "type": "integer",
-            "format": "int32"
+          "customerId": {
+            "type": "string"
+          },
+          "invoiceLines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineRequest"
+            }
           }
         }
       },
@@ -847,6 +731,10 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customerId": {
             "type": "string"
           },
           "name": {

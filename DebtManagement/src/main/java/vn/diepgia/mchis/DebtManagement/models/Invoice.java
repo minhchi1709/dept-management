@@ -38,4 +38,8 @@ public class Invoice {
     public String toString() {
         return "Invoice " + id;
     }
+
+    public void calculateTotal() {
+        this.total = invoiceLines.stream().mapToInt(InvoiceLine::getTotal).sum();
+    }
 }

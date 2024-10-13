@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import vn.diepgia.mchis.DebtManagement.models.*;
 import vn.diepgia.mchis.DebtManagement.repositories.CustomerRepository;
 import vn.diepgia.mchis.DebtManagement.repositories.InvoiceRepository;
+import vn.diepgia.mchis.DebtManagement.repositories.ProductRepository;
 import vn.diepgia.mchis.DebtManagement.repositories.SpecificationRepository;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceRequest;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceLineRequest;
@@ -13,23 +14,25 @@ import vn.diepgia.mchis.DebtManagement.requests.InvoiceLineRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
 @RequiredArgsConstructor
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final CustomerRepository customerRepository;
-    private final ProductService productService;
+    private final ProductRepository productRepository;
     private final SpecificationRepository specificationRepository;
     private final SortInvoiceByDateDescendingService sortInvoiceByDateDescendingService;
-    private static final Logger LOGGER = Logger.getLogger(InvoiceService.class.getName());
-    private int getInvoiceTotal(List<InvoiceLine> invoiceLines) {
-        return invoiceLines.stream().mapToInt(InvoiceLine::getTotal).sum();
+
+    private Product getProductById(String id) {
+        return productRepository.findByProductId(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Mã sản phẩm %s không tồn tại!", id))
+        );
     }
 
     private Customer getCustomerById(String id) {
-        return customerRepository.findById(id).orElseThrow(
+        return customerRepository.findByCustomerId(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Khách hàng %s không tồn tại!", id))
         );
     }
@@ -37,22 +40,22 @@ public class InvoiceService {
     private InvoiceLine mapToInvoiceLine(
             InvoiceLineRequest request
     ) {
-        Product product = productService.getProductById(request.getProductId());
+        Product product = getProductById(request.getProductId());
         Specification specification = specificationRepository.findById(request.getSpecificationId()).orElseThrow(
                 () -> new EntityNotFoundException("Không tìm thấy quy cách")
         );
         if (request.getNumberOfBoxes() < 1) {
             throw new RuntimeException("Số lượng thùng mỗi giao dịch phải lớn hơn 0");
         }
-        return
-                InvoiceLine.builder()
-                        .note(request.getNote())
-                        .numberOfBoxes(request.getNumberOfBoxes())
-                        .total(specification.getPrice() * specification.getAmountPerBox() * request.getNumberOfBoxes())
-                        .product(product)
-                        .specification(specification)
-                        .build();
-
+        InvoiceLine invoiceLine = InvoiceLine.builder()
+                .note(request.getNote())
+                .numberOfBoxes(request.getNumberOfBoxes())
+                .total(0)
+                .product(product)
+                .specification(specification)
+                .build();
+        invoiceLine.calculateTotal();
+        return invoiceLine;
     }
 
     public List<Invoice> getAllInvoices() {
@@ -69,21 +72,17 @@ public class InvoiceService {
         List<InvoiceLine> invoiceLines = request.getInvoiceLines()
                 .stream()
                 .map(this::mapToInvoiceLine).toList();
-        //transactionRepository.saveAll(transactions);
-        int total = getInvoiceTotal(invoiceLines);
         Customer customer = getCustomerById(request.getCustomerId());
         Invoice invoice =
                 Invoice.builder()
                         .id(request.getId())
                         .customer(customer)
                         .invoiceLines(invoiceLines)
-                        .total(total)
                         .date(LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                         .build()
         ;
-        List<Invoice> invoices = customer.getInvoices();
-        invoices.add(invoice);
-        customer.setInvoices(invoices);
+        invoice.calculateTotal();
+        customer.addInvoice(invoice);
         customerRepository.save(customer);
         return invoice.getId();
     }
@@ -106,4 +105,5 @@ public class InvoiceService {
     public List<Invoice> getAllInvoicesOfCustomer(String id) {
         return getCustomerById(id).getInvoices();
     }
+
 }

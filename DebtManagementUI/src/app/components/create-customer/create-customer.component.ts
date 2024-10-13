@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Customer} from "../../api-services/models/customer";
+
 import {CustomerService} from "../../api-services/services/customer.service";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
@@ -9,6 +9,7 @@ import {MatInput} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {Customer} from "../../api-services/models/customer";
 
 @Component({
   selector: 'app-create-customer',
@@ -28,7 +29,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 })
 export class CreateCustomerComponent implements  OnInit {
 
-  customer: Customer = {id: '', name: '', telephone: '', province: ''}
+  customer: Customer = {customerId: '', name: '', telephone: '', province: ''}
   id: string = ''
   error: string = ''
   msg: string = ''
@@ -45,7 +46,7 @@ export class CreateCustomerComponent implements  OnInit {
     this.observer.object$.subscribe(object => {
       if (object) {
         this.customer = object.object
-        this.id = this.customer.id || ''
+        this.id = this.customer.customerId || ''
         this.title = object.title
         this.editMode = object.editMode
       }
@@ -60,7 +61,7 @@ export class CreateCustomerComponent implements  OnInit {
   }
 
   createCustomer() {
-    if (!this.customer.id || !this.customer.name || !this.customer.telephone || !this.customer.province) {
+    if (!this.customer.customerId || !this.customer.name || !this.customer.telephone || !this.customer.province) {
       this.error = 'Vui lòng điền đầy đủ thông tin'
       return
     }
@@ -76,7 +77,9 @@ export class CreateCustomerComponent implements  OnInit {
           this.error = ''
           this.msg = ''
         }, 1000)
-        this.observer.creationNotify(res)
+        this.observer.updateNotify({
+          type: 'customer'
+        })
       },
       error: err => {
         this.error = err.error
@@ -85,7 +88,7 @@ export class CreateCustomerComponent implements  OnInit {
   }
 
   reset(): void {
-    this.customer.id = ''
+    this.customer.customerId = ''
     this.customer.name = ''
     this.customer.telephone = ''
     this.customer.province = ''
@@ -95,7 +98,7 @@ export class CreateCustomerComponent implements  OnInit {
 
 
   updateCustomer() {
-    if (!this.customer.id || !this.customer.name || !this.customer.telephone || !this.customer.province) {
+    if (!this.customer.customerId || !this.customer.name || !this.customer.telephone || !this.customer.province) {
       this.error = 'Vui lòng điền đầy đủ thông tin'
       return
     }

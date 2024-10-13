@@ -217,7 +217,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   filterSpecifications(productId: string): undefined | any[] {
-    let temp = this.products.filter(p => p.id == productId)
+    let temp = this.products.filter(p => p.productId == productId)
     return temp.length > 0 ? temp[0]?.specifications : []
   }
 
@@ -226,7 +226,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   getProductName(id: string): string {
-    const temp = this.products.filter(p => p.id == id)
+    const temp = this.products.filter(p => p.productId == id)
     if (temp.length && temp[0].name) {
       return temp[0].name
     }

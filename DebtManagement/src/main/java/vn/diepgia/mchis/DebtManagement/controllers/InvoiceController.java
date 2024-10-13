@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceRequest;
+import vn.diepgia.mchis.DebtManagement.responses.BasicResponse;
 import vn.diepgia.mchis.DebtManagement.responses.InvoiceResponse;
 import vn.diepgia.mchis.DebtManagement.services.InvoiceService;
 import vn.diepgia.mchis.DebtManagement.services.Mapper;
@@ -47,11 +48,14 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createInvoice(@RequestBody InvoiceRequest request) {
-
+    public ResponseEntity<?> createInvoice(@RequestBody InvoiceRequest request) {
         try {
             LOGGER.info("Attempting to create invoice ID: " + request.getId());
-            return ResponseEntity.ok(invoiceService.createInvoice(request));
+            return ResponseEntity.ok(
+                    BasicResponse.builder()
+                            .response(invoiceService.createInvoice(request))
+                            .build()
+            );
         } catch(RuntimeException e) {
             LOGGER.severe(e.toString());
             return ResponseEntity.badRequest().body(e.getMessage());

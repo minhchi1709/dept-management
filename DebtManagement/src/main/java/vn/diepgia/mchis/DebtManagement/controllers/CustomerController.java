@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.diepgia.mchis.DebtManagement.models.Customer;
+import vn.diepgia.mchis.DebtManagement.responses.BasicResponse;
 import vn.diepgia.mchis.DebtManagement.services.CustomerService;
 
 import java.util.List;
@@ -36,8 +37,11 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> createCustomer(@RequestBody Customer request) {
         try {
-            LOGGER.info("Attempting to create customer ID: " + request.getId());
-            return ResponseEntity.ok(customerService.createCustomer(request));
+            LOGGER.info("Attempting to create customer ID: " + request.getCustomerId());
+            return ResponseEntity.ok(BasicResponse.builder()
+                    .response(customerService.createCustomer(request))
+                    .build()
+            );
         } catch (RuntimeException e) {
             LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -62,7 +66,11 @@ public class CustomerController {
     ) {
         try {
             LOGGER.info("Attempting to update customer ID: " + id);
-            return ResponseEntity.ok(customerService.updateCustomer(id, request));
+            return ResponseEntity.ok(
+                    BasicResponse.builder()
+                            .response(customerService.updateCustomer(id, request))
+                            .build()
+            );
         } catch (EntityNotFoundException e) {
             LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

@@ -1,10 +1,10 @@
 
-<mat-tab-group>
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
   <mat-tab label="Danh sách hóa đơn">
     <app-invoice-list [input]="invoices"/>
   </mat-tab>
   <mat-tab label="Danh sách khách hàng">
-    <app-customer-list [input]="customers"/>
+    <app-customer-list *ngIf="renderCustomerList" [input]="customers"/>
   </mat-tab>
   <mat-tab label="Danh sách sản phẩm">
     <app-product-list [productList]="products"/>

@@ -1,12 +1,7 @@
 package vn.diepgia.mchis.DebtManagement.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,14 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-/*@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)*/
 public class Customer {
 
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
+
+    private String customerId;
     private String name;
     private String province;
     private String telephone;
@@ -38,5 +32,11 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer " + id;
+    }
+
+    public void addInvoice(Invoice invoice) {
+        List<Invoice> invoices = this.invoices;
+        invoices.add(invoice);
+        setInvoices(invoices);
     }
 }

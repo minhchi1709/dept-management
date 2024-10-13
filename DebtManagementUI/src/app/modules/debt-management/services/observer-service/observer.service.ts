@@ -13,10 +13,16 @@ export class ObserverService {
   reset$ = this.resetSource.asObservable()
   private deleteSource = new BehaviorSubject<any>(null);
   delete$ = this.deleteSource.asObservable()
+  private objectUpdateSource = new BehaviorSubject<any>(null);
+  objectUpdated$ = this.objectUpdateSource.asObservable();
 
   constructor(
 
   ) { }
+
+  updateNotify(object: any) {
+    this.objectUpdateSource.next(object)
+  }
 
   creationNotify(newObject: any) {
     this.objectCreationSource.next(newObject);

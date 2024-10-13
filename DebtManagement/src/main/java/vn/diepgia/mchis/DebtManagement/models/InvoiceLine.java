@@ -27,4 +27,8 @@ public class InvoiceLine {
     public String toString() {
         return "InvoiceLine " + id;
     }
+
+    public void calculateTotal() {
+        this.total = this.numberOfBoxes * this.specification.getPrice() * this.specification.getAmountPerBox();
+    }
 }

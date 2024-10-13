@@ -15,10 +15,8 @@ export class MapperService {
     return {
       id: invoice.id,
       date: invoice.date,
-      customerId: invoice.customer?.id,
-      invoiceLines: invoice.invoiceLines?.map((v, i, a)=>
-        this.mapToInvoiceLineRequest(v)
-      )
+      customerId: invoice.customer?.customerId,
+      invoiceLines: invoice.invoiceLines?.map(v=> this.mapToInvoiceLineRequest(v))
     }
   }
 
@@ -26,9 +24,8 @@ export class MapperService {
     return {
       note: invoiceLine.note,
       numberOfBoxes: invoiceLine.numberOfBoxes,
-      productId: invoiceLine.product?.id,
-      specificationId: invoiceLine.specification?.id,
-      lastModified: invoiceLine.lastModified
+      productId: invoiceLine.product?.productId,
+      specificationId: invoiceLine.specification?.id
     }
 
   }

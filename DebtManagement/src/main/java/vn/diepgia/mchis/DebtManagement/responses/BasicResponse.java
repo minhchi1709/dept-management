@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CustomerResponse {
-    private Long id;
-    private String customerId;
-    private String name;
-    private String province;
-    private String telephone;
+public class BasicResponse {
+    private String response;
 }

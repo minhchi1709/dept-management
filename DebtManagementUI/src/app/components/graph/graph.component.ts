@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {CanvasJSAngularChartsModule} from "@canvasjs/angular-charts";
 
 @Component({
@@ -10,7 +10,7 @@ import {CanvasJSAngularChartsModule} from "@canvasjs/angular-charts";
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.scss'
 })
-export class GraphComponent implements OnInit, OnChanges {
+export class GraphComponent implements AfterViewInit, OnChanges {
 
   datapoints: any[] = []
   title: string = ''
@@ -28,9 +28,9 @@ export class GraphComponent implements OnInit, OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.ngOnInit()
+    this.ngAfterViewInit()
   }
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.chartOptions = {
       title: {
         fontFamily: "sans-serif",

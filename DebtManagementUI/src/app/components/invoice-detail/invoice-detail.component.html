@@ -26,7 +26,16 @@
         Mã khách hàng
       </td>
       <td class="mat-grid-tile-content">
-        {{ invoice.customer?.id }}
+        {{ invoice.customer?.customerId }}
+      </td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold">
+        Khách hàng
+      </td>
+      <td>
+        {{ invoice.customer?.name }}
       </td>
     </tr>
 
@@ -45,15 +54,6 @@
       </td>
       <td>
         {{ invoice.customer?.province }}
-      </td>
-    </tr>
-
-    <tr>
-      <td style="font-weight: bold">
-        Khách hàng
-      </td>
-      <td>
-        {{ invoice.customer?.name }}
       </td>
     </tr>
 

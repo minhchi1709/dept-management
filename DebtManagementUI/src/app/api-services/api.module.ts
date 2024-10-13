@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProductService } from './services/product.service';
-import { InvoiceService } from './services/invoice.service';
 import { CustomerService } from './services/customer.service';
+import { InvoiceService } from './services/invoice.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,8 +17,8 @@ import { CustomerService } from './services/customer.service';
   declarations: [],
   providers: [
     ProductService,
-    InvoiceService,
     CustomerService,
+    InvoiceService,
     ApiConfiguration
   ],
 })

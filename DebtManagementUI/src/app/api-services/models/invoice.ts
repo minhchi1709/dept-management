@@ -7,9 +7,5 @@ export interface Invoice {
   date?: string;
   id?: string;
   invoiceLines?: Array<InvoiceLine>;
-  isPaid?: boolean;
-  lastModified?: string;
-  paidAmount?: number;
-  rest?: number;
   total?: number;
 }

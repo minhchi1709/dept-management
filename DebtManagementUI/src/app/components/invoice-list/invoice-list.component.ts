@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
@@ -43,12 +52,12 @@ import {InvoiceResponse} from "../../api-services/models/invoice-response";
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.scss'
 })
-export class InvoiceListComponent implements AfterViewInit, OnChanges {
+export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
 
   invoice: InvoiceResponse = {}
   invoices: InvoiceResponse[] = []
   filteredInvoices: InvoiceResponse[] = []
-  dataSource = new MatTableDataSource<Invoice>([])
+  dataSource = new MatTableDataSource<InvoiceResponse>([])
   invoiceLineDataSource = new MatTableDataSource<InvoiceLineRequest>([])
   columnsToDisplay = [
     'invoiceId',
@@ -75,22 +84,27 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
   ) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-        this.ngAfterViewInit()
+  ngOnInit(): void {
         this.filter()
+    }
+
+  ngOnChanges(changes: SimpleChanges): void {
+        this.ngOnInit()
+        this.ngAfterViewInit()
     }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.filter()
   }
 
   @Input()
   set input(input: InvoiceResponse[]) {
     this.invoices = input
     this.filteredInvoices = input
-    this.dataSource = new MatTableDataSource<Invoice>(input)
+    this.dataSource = new MatTableDataSource<InvoiceResponse>(input)
   }
 
   setInvoice(dataSource: Invoice) {
@@ -104,8 +118,10 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
   }
 
   filter() {
+
     this.showGraph = false
     this.filteredInvoices = this.invoices
+    this.graphTitle = ''
     this.filterByInvoiceId()
     this.filterByCustomerId()
     this.filterByProvince()
@@ -113,7 +129,7 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
     if (this.filteredInvoices.length == 1) {
       this.invoice = this.filteredInvoices[0]
       this.invoiceLineDataSource = new MatTableDataSource<InvoiceLineRequest>(
-        this.invoice.invoiceLines?.map((line, i, a) => {
+        this.invoice.invoiceLines?.map(line => {
           return this.mapper.mapToInvoiceLineRequest(line)
         })
       )
@@ -133,13 +149,18 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
           console.log('year')
           this.graphTitle = `Thống kê năm ${this.year}`
         }
-      }
-      if (this.onlyOneCustomer()) {
+        if (this.onlyOneCustomer()) {
+          const customer = this.filteredInvoices[0].customer
+          this.graphTitle += ` của khách hàng ${customer?.name}, MKH: ${customer?.customerId}`
+        }
+      } else if (this.onlyOneCustomer()) {
         this.showGraph = true
-        this.graphTitle += ` của khách hàng ${this.invoice.customer?.name}, MKH: ${this.invoice.customer?.id}`
+        const customer = this.filteredInvoices[0].customer
+        this.graphTitle += `Thống kê của khách hàng ${customer?.name}, MKH: ${customer?.customerId}`
       }
+
       if (this.showGraph) {
-        this.datapoints = this.filteredInvoices.map((invoice, i, a) => {
+        this.datapoints = this.filteredInvoices.map(invoice => {
           return {
             label: this.dateService.formatDate(invoice.date || ''),
             y: invoice.total
@@ -147,7 +168,7 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
         })
       }
     }
-    this.dataSource = new MatTableDataSource<Invoice>(this.filteredInvoices)
+    this.dataSource = new MatTableDataSource<InvoiceResponse>(this.filteredInvoices)
   }
 
   onlyOneCustomer(): boolean {
@@ -163,7 +184,7 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
   filterByInvoiceId() {
     if (this.invoiceIdQuery) {
       console.log('filter invoice id')
-      this.filteredInvoices = this.filteredInvoices.filter((invoice, i, a) => {
+      this.filteredInvoices = this.filteredInvoices.filter(invoice => {
         return invoice.id?.toLowerCase().includes(this.invoiceIdQuery.toLowerCase())
       })
     }
@@ -172,8 +193,8 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
   filterByCustomerId() {
     if (this.customerIdQuery) {
       console.log('filter customer id')
-      this.filteredInvoices = this.filteredInvoices.filter((invoice, i, a) => {
-        return invoice.customer?.id?.toLowerCase().includes(this.customerIdQuery.toLowerCase())
+      this.filteredInvoices = this.filteredInvoices.filter(invoice => {
+        return invoice.customer?.customerId?.toLowerCase().includes(this.customerIdQuery.toLowerCase())
       })
     }
   }
@@ -181,7 +202,7 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
   filterByProvince() {
     if (this.provinceQuery) {
       console.log('filter province')
-      this.filteredInvoices = this.filteredInvoices.filter((invoice, i, a) => {
+      this.filteredInvoices = this.filteredInvoices.filter(invoice => {
         return invoice.customer?.province?.toLowerCase().includes(this.provinceQuery.toLowerCase())
       })
     }
@@ -192,19 +213,19 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges {
       if (this.month) {
         console.log('filter month')
         if (this.date) {
-          this.filteredInvoices = this.filteredInvoices.filter((invoice, i, a) => {
+          this.filteredInvoices = this.filteredInvoices.filter(invoice => {
             const date = new Date(invoice.date || '')
             return date.getDate() == Number(this.date) &&
               date.getMonth() + 1 == Number(this.month) && date.getFullYear() == Number(this.year)
           })
         } else { // only month and year
-          this.filteredInvoices = this.filteredInvoices.filter((invoice, i, a) => {
+          this.filteredInvoices = this.filteredInvoices.filter(invoice => {
             const date = new Date(invoice.date || '')
             return date.getMonth() + 1 == Number(this.month) && date.getFullYear() == Number(this.year)
           })
         }
       } else { // only year
-        this.filteredInvoices = this.filteredInvoices.filter((invoice, i, a) => {
+        this.filteredInvoices = this.filteredInvoices.filter(invoice => {
           const date = new Date(invoice.date || '')
           return date.getFullYear() == Number(this.year)
         })

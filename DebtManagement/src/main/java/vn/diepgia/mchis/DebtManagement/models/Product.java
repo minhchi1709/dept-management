@@ -1,10 +1,6 @@
 package vn.diepgia.mchis.DebtManagement.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +16,9 @@ import java.util.List;
 public class Product {
 
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
+    private String productId;
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)

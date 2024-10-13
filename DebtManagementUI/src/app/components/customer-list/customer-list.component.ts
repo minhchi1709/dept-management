@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Customer} from "../../api-services/models/customer";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
@@ -34,7 +34,7 @@ import {InvoiceRequest} from "../../api-services/models/invoice-request";
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.scss'
 })
-export class CustomerListComponent implements AfterViewInit, OnChanges {
+export class CustomerListComponent implements AfterViewInit, OnChanges, OnInit {
   customers: Customer[] = []
   dataSource = new MatTableDataSource<Customer>([])
   invoicesDataSource = new MatTableDataSource<Customer>([])
@@ -51,8 +51,20 @@ export class CustomerListComponent implements AfterViewInit, OnChanges {
   ) {
   }
 
+  ngOnInit(): void {
+
+    this.observer.objectUpdated$.subscribe(object => {
+      if (object && object.type == 'customer') {
+        this.idQuery = ''
+        console.log('list')
+      }
+    })
+    this.filter()
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-        this.ngAfterViewInit()
+      this.ngOnInit()
+      this.ngAfterViewInit()
     }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -74,32 +86,19 @@ export class CustomerListComponent implements AfterViewInit, OnChanges {
       title: 'Chỉnh sửa khách hàng',
       editMode: true
     })
-    this.idQuery = customer.id != undefined ? customer.id : ''
+    this.idQuery = customer.customerId || ''
     //this.provinceQuery = customer.province != undefined ? customer.province : ''
     this.filter()
   }
 
   filter() {
-    if (this.idQuery && this.provinceQuery) {
-      this.filteredCustomers = this.customers.filter(c => {
-        return c.province?.toLowerCase().includes(this.provinceQuery.toLowerCase()) &&
-          c.id?.toLowerCase().includes(this.idQuery.toLowerCase())
-      })
-    } else if (!this.idQuery && this.provinceQuery) { // filter based on province input
-      this.filteredCustomers = this.customers.filter(c => {
-        return c.province?.toLowerCase().includes(this.provinceQuery.toLowerCase())
-      })
-    } else if (!this.provinceQuery && this.idQuery){
-      this.filteredCustomers = this.customers.filter(c => {
-        return c.id?.toLowerCase().includes(this.idQuery.toLowerCase())
-      })
-    } else {
-      this.filteredCustomers = this.customers
-    }
+    this.filteredCustomers = this.customers
+    this.filterByCustomerId()
+    this.filterByProvince()
     if (this.filteredCustomers.length == 1) {
       this.customer = this.filteredCustomers[0]
       this.invoiceService.getAllInvoicesOfCustomer({
-        id: this.customer.id || ''
+        id: this.customer.customerId || ''
       }).subscribe({
         next: value => this.invoices = value
       })
@@ -108,6 +107,22 @@ export class CustomerListComponent implements AfterViewInit, OnChanges {
     }
     this.dataSource = new MatTableDataSource<Customer>(this.filteredCustomers)
     this.ngAfterViewInit()
+  }
+
+  filterByCustomerId() {
+    if (this.idQuery) {
+      this.filteredCustomers = this.filteredCustomers.filter(c => {
+        return c.customerId?.toLowerCase().includes(this.idQuery.toLowerCase())
+      })
+    }
+  }
+
+  filterByProvince() {
+    if (this.provinceQuery) {
+      this.filteredCustomers = this.filteredCustomers.filter(c => {
+        return c.province?.toLowerCase().includes(this.provinceQuery.toLowerCase())
+      })
+    }
   }
 
   clear(type: string) {

@@ -36,7 +36,7 @@ export class CreateProductComponent implements OnInit{
   protected readonly Array = Array;
   error: string = ''
   msg: string = ''
-  product: Product = {id: '', name: '', specifications: []}
+  product: Product = {productId: '', name: '', specifications: []}
   specifications: Specification[] = [
     {
       unit: '', price: 0, amountPerBox: 0
@@ -56,7 +56,7 @@ export class CreateProductComponent implements OnInit{
     this.observer.object$.subscribe(object => {
       if (object) {
         this.product = object.object
-        this.id = this.product.id || ''
+        this.id = this.product.productId || ''
         this.title = object.title
         this.editMode = object.editMode
         if (this.product.specifications) {
@@ -74,7 +74,7 @@ export class CreateProductComponent implements OnInit{
 
   createProduct() {
     this.error = ''
-    if (!this.product.id || !this.product.name ) {
+    if (!this.product.productId || !this.product.name ) {
       this.error = 'Vui lòng điền đầy đủ thông tin'
       return
     }
@@ -99,7 +99,6 @@ export class CreateProductComponent implements OnInit{
       body: this.product
     }).subscribe({
       next: val => {
-        console.log(val)
         this.msg = 'Thêm thành công'
         this.error = ''
         this.reset()
@@ -117,7 +116,7 @@ export class CreateProductComponent implements OnInit{
   reset() {
     this.title = 'Thêm sản phẩm'
     this.editMode = false
-    this.product.id = ''
+    this.product.productId = ''
     this.product.name = ''
     this.product.specifications = []
     this.specifications = [{

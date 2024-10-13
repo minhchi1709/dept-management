@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.diepgia.mchis.DebtManagement.models.Product;
 import vn.diepgia.mchis.DebtManagement.models.Specification;
+import vn.diepgia.mchis.DebtManagement.responses.BasicResponse;
 import vn.diepgia.mchis.DebtManagement.services.ProductService;
 
 import java.util.List;
@@ -42,8 +43,12 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody Product product) {
         try {
-            LOGGER.info("Attempting to create product ID: " + product.getId());
-            return ResponseEntity.ok(productService.createProduct(product));
+            LOGGER.info("Attempting to create product ID: " + product.getProductId());
+            return ResponseEntity.ok(
+                    BasicResponse.builder()
+                            .response(productService.createProduct(product))
+                            .build()
+            );
         } catch (RuntimeException e) {
             LOGGER.severe(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -64,11 +69,15 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(
             @PathVariable String id,
-            @RequestBody Product productRequest
+            @RequestBody Product request
     ) {
         try {
             LOGGER.info("Attempting to update product ID: " + id);
-            return ResponseEntity.ok(productService.updateProduct(id, productRequest));
+            return ResponseEntity.ok(
+                    BasicResponse.builder()
+                            .response(productService.updateProduct(id, request))
+                            .build()
+            );
         } catch (EntityNotFoundException e) {
             LOGGER.severe(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

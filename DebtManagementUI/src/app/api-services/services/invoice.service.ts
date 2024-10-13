@@ -20,44 +20,11 @@ import { GetAllInvoicesOfCustomer$Params } from '../fn/invoice/get-all-invoices-
 import { getInvoiceById } from '../fn/invoice/get-invoice-by-id';
 import { GetInvoiceById$Params } from '../fn/invoice/get-invoice-by-id';
 import { InvoiceResponse } from '../models/invoice-response';
-import { payInvoice } from '../fn/invoice/pay-invoice';
-import { PayInvoice$Params } from '../fn/invoice/pay-invoice';
-import { updateInvoice } from '../fn/invoice/update-invoice';
-import { UpdateInvoice$Params } from '../fn/invoice/update-invoice';
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
-  }
-
-  /** Path part for operation `updateInvoice()` */
-  static readonly UpdateInvoicePath = '/invoices/{invoiceId}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `updateInvoice()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  updateInvoice$Response(params: UpdateInvoice$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
-    return updateInvoice(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `updateInvoice$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  updateInvoice(params: UpdateInvoice$Params, context?: HttpContext): Observable<{
-}> {
-    return this.updateInvoice$Response(params, context).pipe(
-      map((r: StrictHttpResponse<{
-}>): {
-} => r.body)
-    );
   }
 
   /** Path part for operation `getAllInvoices()` */
@@ -94,7 +61,8 @@ export class InvoiceService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createInvoice$Response(params: CreateInvoice$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  createInvoice$Response(params: CreateInvoice$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
     return createInvoice(this.http, this.rootUrl, params, context);
   }
 
@@ -104,9 +72,12 @@ export class InvoiceService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createInvoice(params: CreateInvoice$Params, context?: HttpContext): Observable<string> {
+  createInvoice(params: CreateInvoice$Params, context?: HttpContext): Observable<{
+}> {
     return this.createInvoice$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
     );
   }
 
@@ -133,35 +104,6 @@ export class InvoiceService extends BaseService {
   getInvoiceById(params: GetInvoiceById$Params, context?: HttpContext): Observable<{
 }> {
     return this.getInvoiceById$Response(params, context).pipe(
-      map((r: StrictHttpResponse<{
-}>): {
-} => r.body)
-    );
-  }
-
-  /** Path part for operation `payInvoice()` */
-  static readonly PayInvoicePath = '/invoices/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `payInvoice()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  payInvoice$Response(params: PayInvoice$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
-    return payInvoice(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `payInvoice$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  payInvoice(params: PayInvoice$Params, context?: HttpContext): Observable<{
-}> {
-    return this.payInvoice$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
