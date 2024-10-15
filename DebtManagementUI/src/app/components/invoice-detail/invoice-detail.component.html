@@ -1,6 +1,12 @@
 <div style="margin-top: 5rem">
   <h1 style="text-align: center">
     Chi tiết hóa đơn
+    <button mat-mini-fab color="accent" matTooltip="Xuất hóa đơn"
+            style="margin-right: 5px; margin-left: 5px"
+            tabindex="-1"
+            (click)="printInvoice()">
+      <mat-icon>print</mat-icon>
+    </button>
     <button mat-mini-fab color="warn" matTooltip="Xóa"
             tabindex="-1"
             data-bs-toggle="modal"

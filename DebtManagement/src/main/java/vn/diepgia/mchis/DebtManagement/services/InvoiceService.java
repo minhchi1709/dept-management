@@ -11,6 +11,7 @@ import vn.diepgia.mchis.DebtManagement.repositories.SpecificationRepository;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceRequest;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceLineRequest;
 
+import com.itextpdf.text.Document;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,6 +24,7 @@ public class InvoiceService {
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
     private final SpecificationRepository specificationRepository;
+    private final PdfGeneratorService pdfGeneratorService;
     private final SortInvoiceByDateDescendingService sortInvoiceByDateDescendingService;
 
     private Product getProductById(String id) {
@@ -106,4 +108,8 @@ public class InvoiceService {
         return getCustomerById(id).getInvoices();
     }
 
+    public String generateInvoicePdf(String id) {
+        Invoice invoice = getInvoiceById(id);
+        return pdfGeneratorService.generatePdf(invoice);
+    }
 }

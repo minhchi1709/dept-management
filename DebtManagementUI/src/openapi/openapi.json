@@ -316,6 +316,37 @@
         }
       }
     },
+    "/invoices/{id}/generate-pdf": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "operationId": "generateInvoicePdf",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/customers": {
       "get": {
         "tags": [

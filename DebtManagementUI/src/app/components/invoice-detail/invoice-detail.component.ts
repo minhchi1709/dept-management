@@ -13,6 +13,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
 import {InvoiceResponse} from "../../api-services/models/invoice-response";
+import {InvoiceService} from "../../api-services/services/invoice.service";
 
 @Component({
   selector: 'app-invoice-detail',
@@ -38,7 +39,8 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
   constructor(
     private productService: ProductService,
     protected dateService: DateService,
-    private observer: ObserverService
+    private observer: ObserverService,
+    private invoiceService: InvoiceService
   ) {
   }
 
@@ -88,6 +90,17 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
     this.observer.deleteNotify({
       type: 'invoice',
       id: this.invoice.id
+    })
+  }
+
+  printInvoice() {
+    this.invoiceService.generateInvoicePdf({
+      id: this.invoice.id || ''
+    }).subscribe({
+      next: value => {
+        const url = window.URL.createObjectURL(value)
+        window.open(url)
+      }
     })
   }
 }

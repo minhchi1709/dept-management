@@ -3,6 +3,10 @@ package vn.diepgia.mchis.DebtManagement.controllers;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceRequest;
@@ -11,6 +15,8 @@ import vn.diepgia.mchis.DebtManagement.responses.InvoiceResponse;
 import vn.diepgia.mchis.DebtManagement.services.InvoiceService;
 import vn.diepgia.mchis.DebtManagement.services.Mapper;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,6 +40,24 @@ public class InvoiceController {
                         .map(mapper::toInvoiceResponse)
                         .toList()
         );
+    }
+
+    @PostMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
+    public ResponseEntity<Resource> generateInvoicePdf(@PathVariable String id) {
+        LOGGER.info("Generate invoice pdf ID: " + id);
+        String fileName = invoiceService.generateInvoicePdf(id);
+        File file = new File(fileName);
+        try {
+            Resource resource = new UrlResource(file.toURI());
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                        .body(resource);
+            }
+        } catch (MalformedURLException e) {
+            LOGGER.severe(e.getMessage());
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/customers/{id}")

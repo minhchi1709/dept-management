@@ -13,6 +13,8 @@ import { createInvoice } from '../fn/invoice/create-invoice';
 import { CreateInvoice$Params } from '../fn/invoice/create-invoice';
 import { deleteInvoice } from '../fn/invoice/delete-invoice';
 import { DeleteInvoice$Params } from '../fn/invoice/delete-invoice';
+import { generateInvoicePdf } from '../fn/invoice/generate-invoice-pdf';
+import { GenerateInvoicePdf$Params } from '../fn/invoice/generate-invoice-pdf';
 import { getAllInvoices } from '../fn/invoice/get-all-invoices';
 import { GetAllInvoices$Params } from '../fn/invoice/get-all-invoices';
 import { getAllInvoicesOfCustomer } from '../fn/invoice/get-all-invoices-of-customer';
@@ -78,6 +80,31 @@ export class InvoiceService extends BaseService {
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `generateInvoicePdf()` */
+  static readonly GenerateInvoicePdfPath = '/invoices/{id}/generate-pdf';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `generateInvoicePdf()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  generateInvoicePdf$Response(params: GenerateInvoicePdf$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+    return generateInvoicePdf(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `generateInvoicePdf$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  generateInvoicePdf(params: GenerateInvoicePdf$Params, context?: HttpContext): Observable<Blob> {
+    return this.generateInvoicePdf$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Blob>): Blob => r.body)
     );
   }
 
