@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {CustomerService} from "../../api-services/services/customer.service";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";

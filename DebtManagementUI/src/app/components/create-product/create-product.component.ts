@@ -5,7 +5,7 @@ import {Product} from "../../api-services/models/product";
 import {ProductService} from "../../api-services/services/product.service";
 import {Specification} from "../../api-services/models/specification";
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatTooltipModule} from "@angular/material/tooltip";

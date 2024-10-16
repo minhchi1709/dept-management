@@ -4,7 +4,7 @@ import {InvoiceService} from "../../api-services/services/invoice.service";
 import {CreateCustomerComponent} from "../create-customer/create-customer.component";
 import {CreateInvoiceComponent} from "../create-invoice/create-invoice.component";
 import {CreateProductComponent} from "../create-product/create-product.component";
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatButtonModule} from "@angular/material/button";

@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {provideHttpClient} from "@angular/common/http";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
-import {CustomMatPaginatorIntl} from "./modules/debt-management/custom/CustomMatPaginator";
+import {CustomMatPaginatorIntl} from "./custom/CustomMatPaginator";
 import {MatPaginatorIntl} from "@angular/material/paginator";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {provideMomentDateAdapter} from "@angular/material-moment-adapter";

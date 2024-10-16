@@ -4,7 +4,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {CreateCustomerComponent} from "../create-customer/create-customer.component";
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {MatIconModule} from "@angular/material/icon";
 import { MatFormFieldModule, MatLabel} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";

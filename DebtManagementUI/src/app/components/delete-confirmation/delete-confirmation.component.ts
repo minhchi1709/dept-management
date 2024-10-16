@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {CustomerService} from "../../api-services/services/customer.service";
 import {ProductService} from "../../api-services/services/product.service";
 import {InvoiceService} from "../../api-services/services/invoice.service";

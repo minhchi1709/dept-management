@@ -7,11 +7,11 @@ import {InvoiceLineRequest} from "../../api-services/models/invoice-line-request
 import {ProductService} from "../../api-services/services/product.service";
 import {Product} from "../../api-services/models/product";
 import {Specification} from "../../api-services/models/specification";
-import {DateService} from "../../modules/debt-management/services/date-service/date.service";
+import {DateService} from "../../services/date-service/date.service";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltip} from "@angular/material/tooltip";
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {InvoiceResponse} from "../../api-services/models/invoice-response";
 import {InvoiceService} from "../../api-services/services/invoice.service";
 

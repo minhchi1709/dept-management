@@ -9,7 +9,7 @@ import {ProductService} from "../../api-services/services/product.service";
 import {Customer} from "../../api-services/models/customer";
 import {Product} from "../../api-services/models/product";
 import {NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import {MatTabChangeEvent, MatTabsModule} from "@angular/material/tabs";
 import {InvoiceResponse} from "../../api-services/models/invoice-response";
 

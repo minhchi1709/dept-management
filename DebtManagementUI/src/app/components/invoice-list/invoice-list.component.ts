@@ -12,9 +12,9 @@ import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Invoice} from "../../api-services/models/invoice";
-import {DateService} from "../../modules/debt-management/services/date-service/date.service";
-import {CurrencyService} from "../../modules/debt-management/services/currency-service/currency.service";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {DateService} from "../../services/date-service/date.service";
+import {CurrencyService} from "../../services/currency-service/currency.service";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
@@ -22,7 +22,7 @@ import {MatInput} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerModule} from "@angular/material/datepicker";
 import {InvoiceDetailComponent} from "../invoice-detail/invoice-detail.component";
 import {InvoiceLineRequest} from "../../api-services/models/invoice-line-request";
-import {MapperService} from "../../modules/debt-management/services/mapper-service/mapper.service";
+import {MapperService} from "../../services/mapper-service/mapper.service";
 import {GraphComponent} from "../graph/graph.component";
 import {InvoiceResponse} from "../../api-services/models/invoice-response";
 
@@ -69,12 +69,14 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
   invoiceIdQuery: string = '';
   customerIdQuery: string = '';
   provinceQuery: string = '';
-  date: any = ''
-  month: any = ''
-  year: any = ''
+
   graphTitle: string = ''
   datapoints: any[] =[]
   showGraph: boolean = false
+  readonly range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
 
   constructor(
@@ -135,28 +137,12 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
       )
     }
     if (this.filteredInvoices.length > 1) {
-      if (this.year) {
-        this.showGraph = true
-        if (this.month) {
-          if (this.date) {
-            console.log('date')
-            this.graphTitle = `Thống kê ngày ${this.date}/${this.month}/${this.year}`
-          } else {
-            console.log('month')
-            this.graphTitle = `Thống kê tháng ${this.month}/${this.year}`
-          }
-        } else {
-          console.log('year')
-          this.graphTitle = `Thống kê năm ${this.year}`
-        }
-        if (this.onlyOneCustomer()) {
-          const customer = this.filteredInvoices[0].customer
-          this.graphTitle += ` của khách hàng ${customer?.name}, MKH: ${customer?.customerId}`
-        }
-      } else if (this.onlyOneCustomer()) {
+      if (this.onlyOneCustomer()) {
         this.showGraph = true
         const customer = this.filteredInvoices[0].customer
-        this.graphTitle += `Thống kê của khách hàng ${customer?.name}, MKH: ${customer?.customerId}`
+        this.graphTitle = this.graphTitle ?
+          `${this.graphTitle} của khách hàng ${customer?.name}, MKH: ${customer?.customerId}` :
+          `Thống kê của khách hàng ${customer?.name}, MKH: ${customer?.customerId}`
       }
 
       if (this.showGraph) {
@@ -167,6 +153,8 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
           }
         })
       }
+    } else {
+      this.showGraph = false
     }
     this.dataSource = new MatTableDataSource<InvoiceResponse>(this.filteredInvoices)
   }
@@ -209,27 +197,35 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   filterByDate() {
-    if (this.year) {
-      if (this.month) {
-        console.log('filter month')
-        if (this.date) {
-          this.filteredInvoices = this.filteredInvoices.filter(invoice => {
-            const date = new Date(invoice.date || '')
-            return date.getDate() == Number(this.date) &&
-              date.getMonth() + 1 == Number(this.month) && date.getFullYear() == Number(this.year)
-          })
-        } else { // only month and year
-          this.filteredInvoices = this.filteredInvoices.filter(invoice => {
-            const date = new Date(invoice.date || '')
-            return date.getMonth() + 1 == Number(this.month) && date.getFullYear() == Number(this.year)
-          })
-        }
-      } else { // only year
-        this.filteredInvoices = this.filteredInvoices.filter(invoice => {
-          const date = new Date(invoice.date || '')
-          return date.getFullYear() == Number(this.year)
-        })
-      }
+    this.filterByStartDate()
+    this.filterByEndDate()
+  }
+
+  filterByStartDate() {
+    if (this.range.value.start) {
+      this.showGraph = true
+
+      const start = new Date(this.range.value.start.toISOString())
+      this.graphTitle = `Thống kê từ ${start.getDate()}/${start.getMonth() + 1}/${start.getFullYear()}`
+      this.filteredInvoices = this.filteredInvoices.filter(invoice => {
+        const date = new Date(invoice.date || '')
+        return start <= date
+      })
+    }
+  }
+
+  filterByEndDate() {
+    if (this.range.value.end) {
+      this.showGraph = true
+      const end = new Date(this.range.value.end.toISOString())
+      end.setHours(23, 59, 59)
+      this.graphTitle = this.graphTitle ?
+        `${this.graphTitle} đến ${end.getDate()}/${end.getMonth() + 1}/${end.getFullYear()}` :
+        `Thống kê đến ${end.getDate()}/${end.getMonth() + 1}/${end.getFullYear()} `
+      this.filteredInvoices = this.filteredInvoices.filter(invoice => {
+        const date = new Date(invoice.date || '')
+        return end >= date
+      })
     }
   }
 
@@ -248,17 +244,10 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
         break
       }
       case 'date': {
-        this.date = ''
+        this.range.reset()
         break
       }
-      case 'month': {
-        this.month = ''
-        break
-      }
-      case 'year': {
-        this.year = ''
-        break
-      }
+
     }
     this.filter()
   }

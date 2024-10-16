@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Invoice} from "../../../../api-services/models/invoice";
-import {InvoiceRequest} from "../../../../api-services/models/invoice-request";
-import {InvoiceLine} from "../../../../api-services/models/invoice-line";
-import {InvoiceLineRequest} from "../../../../api-services/models/invoice-line-request";
+import {Invoice} from "../../api-services/models/invoice";
+import {InvoiceRequest} from "../../api-services/models/invoice-request";
+import {InvoiceLine} from "../../api-services/models/invoice-line";
+import {InvoiceLineRequest} from "../../api-services/models/invoice-line-request";
 
 @Injectable({
   providedIn: 'root'

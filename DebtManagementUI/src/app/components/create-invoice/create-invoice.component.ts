@@ -21,7 +21,7 @@ import {ProductService} from "../../api-services/services/product.service";
 import {CustomerService} from "../../api-services/services/customer.service";
 import {MatSelectModule} from "@angular/material/select";
 import {Product} from "../../api-services/models/product";
-import {ObserverService} from "../../modules/debt-management/services/observer-service/observer.service";
+import {ObserverService} from "../../services/observer-service/observer.service";
 import { MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {InvoiceLineRequest} from "../../api-services/models/invoice-line-request";
