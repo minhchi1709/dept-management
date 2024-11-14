@@ -17,13 +17,15 @@ import vn.diepgia.mchis.DebtManagement.services.Mapper;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.logging.Logger;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
-@RequestMapping("invoices")
+@RequestMapping("/app/DebtManagement/api/invoices")
 @Tag(name = "Invoice")
 @RequiredArgsConstructor
 public class InvoiceController {
@@ -51,7 +53,7 @@ public class InvoiceController {
             Resource resource = new UrlResource(file.toURI());
             if (resource.exists() || resource.isReadable()) {
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8\"" + URLEncoder.encode(fileName, StandardCharsets.UTF_8) + "\"")
                         .body(resource);
             }
         } catch (MalformedURLException e) {

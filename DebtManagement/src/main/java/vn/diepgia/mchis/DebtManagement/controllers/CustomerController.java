@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("customers")
+@RequestMapping("/app/DebtManagement/api/customers")
 @Tag(name = "Customer")
 @RequiredArgsConstructor
 public class CustomerController {

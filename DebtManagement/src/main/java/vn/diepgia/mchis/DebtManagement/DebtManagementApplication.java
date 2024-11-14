@@ -27,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		servers = {
 				@Server(
 						description = "Local ENV",
-						url = "http://localhost:8088/app/DebtManagement/api"
+						url = "http://localhost:8088"
 				)
 		}
 )

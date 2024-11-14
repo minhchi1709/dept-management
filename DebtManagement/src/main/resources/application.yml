@@ -6,6 +6,6 @@ spring:
       max-file-size: 50MB
 springdoc:
   default-produces-media-type: application/json
-server:
-  servlet:
-    context-path: /app/DebtManagement/api/
+application:
+  file: ./files/
+  fonts: fonts/TimesNewRoman.ttf

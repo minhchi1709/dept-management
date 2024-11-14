@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping("/app/DebtManagement/api/products")
 @Tag(name = "Product")
 @RequiredArgsConstructor
 public class ProductController {

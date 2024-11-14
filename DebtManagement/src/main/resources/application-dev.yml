@@ -15,6 +15,3 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8088
-application:
-  file: ./files
-  fonts: ./fonts/SVN-Times-New-Roman-2.ttf
