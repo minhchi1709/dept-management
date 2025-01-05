@@ -1,10 +1,13 @@
 package vn.diepgia.mchis.DebtManagement.repositories;
 
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import vn.diepgia.mchis.DebtManagement.models.Customer;
 
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    Optional<Customer> findByCustomerId(String customerId);
+public interface CustomerRepository extends MongoRepository<Customer, String> {
+
+    @Query("{ 'customerId' : ?0 }")
+    Customer findByCustomerId(String customerId);
+
     void deleteByCustomerId(String customerId);
 }

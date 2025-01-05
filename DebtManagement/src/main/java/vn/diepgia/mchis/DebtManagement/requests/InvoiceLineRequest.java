@@ -12,5 +12,5 @@ public class InvoiceLineRequest {
     private String note;
     private int numberOfBoxes;
     private String productId;
-    private Integer specificationId;
+    private String specificationId;
 }

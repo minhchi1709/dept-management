@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {NavigationComponent} from "./components/navigation/navigation.component";
-import {
-  DeleteConfirmationComponent
-} from "./components/delete-confirmation/delete-confirmation.component";
 import * as _moment from 'moment';
 import {default as _rollupMoment} from "moment/moment";
-import {MatDivider} from "@angular/material/divider";
 const moment = _rollupMoment || _moment;
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavigationComponent, DeleteConfirmationComponent, MatDivider],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
 export class AppComponent {
   title = 'DebtManagementUI';
   constructor() {

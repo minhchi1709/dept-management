@@ -1,8 +1,8 @@
 package vn.diepgia.mchis.DebtManagement.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vn.diepgia.mchis.DebtManagement.exceptions.DocumentNotFoundException;
 import vn.diepgia.mchis.DebtManagement.models.Invoice;
 import vn.diepgia.mchis.DebtManagement.models.Product;
 import vn.diepgia.mchis.DebtManagement.models.Specification;
@@ -27,28 +27,30 @@ public class ProductService {
     }
 
     public String createProduct(Product product) {
-        if (productRepository.findByProductId(product.getProductId()).isPresent()) {
+        if (productRepository.findByProductId(product.getProductId()) != null) {
             throw new RuntimeException(String.format("Mã sản phẩm %s đã tồn tại!", product.getId()));
         }
         return productRepository.save(
                 Product.builder()
                         .productId(product.getProductId())
-                        .specifications(product.getSpecifications())
+                        .specifications(specificationRepository.saveAll(product.getSpecifications()))
                         .name(product.getName())
                         .build()
         ).getProductId();
     }
 
-    public Product getProductById(String id) {
-        return productRepository.findByProductId(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Mã sản phẩm %s không tồn tại!", id))
-        );
+    public Product getProductById(String id) throws DocumentNotFoundException {
+        Product product = productRepository.findByProductId(id);
+        if (product == null) {
+            throw new DocumentNotFoundException(String.format("Mã sản phẩm %s không tồn tại!", id));
+        }
+        return product;
     }
 
     public String updateProduct(
             String id,
             Product request
-    ) {
+    ) throws DocumentNotFoundException {
         Product product = getProductById(id);
         product.setProductId(request.getProductId());
         product.setName(request.getName());
@@ -65,7 +67,7 @@ public class ProductService {
         return product.getProductId();
     }
 
-    public void deleteProduct(String id) {
+    public void deleteProduct(String id) throws DocumentNotFoundException {
         Product product = getProductById(id);
         for (Invoice invoice: invoiceRepository.findAll()){
             List<InvoiceLine> filteredInvoiceLines = invoice.getInvoiceLines()
@@ -87,13 +89,13 @@ public class ProductService {
                 .toList();
     }
 
-    public void deleteSpecification(String id, Integer specificationId) {
+    public void deleteSpecification(String id, String specificationId) throws DocumentNotFoundException {
         Product product = getProductById(id);
         Specification specification = specificationRepository.findById(specificationId).orElseThrow(
-                () -> new EntityNotFoundException("Không tìm thấy quy cách")
+                () -> new DocumentNotFoundException("Không tìm thấy quy cách")
         );
         if (!product.getSpecifications().contains(specification)) {
-            throw new EntityNotFoundException("Không tìm thấy quy cách");
+            throw new DocumentNotFoundException("Không tìm thấy quy cách");
         }
         List<Specification> specifications = product.getSpecifications();
         specifications.remove(specification);

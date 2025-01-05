@@ -1,26 +1,30 @@
 package vn.diepgia.mchis.DebtManagement.models;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document(collection = "invoiceLines")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class InvoiceLine {
+
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
     private String note;
     private int total;
     private int numberOfBoxes;
-    @ManyToOne
+
+    @DBRef
     private Specification specification;
-    @ManyToOne
+
+    @DBRef
     private Product product;
 
     @Override

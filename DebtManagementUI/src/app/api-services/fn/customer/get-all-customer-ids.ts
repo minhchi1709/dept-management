@@ -25,4 +25,4 @@ export function getAllCustomerIds(http: HttpClient, rootUrl: string, params?: Ge
   );
 }
 
-getAllCustomerIds.PATH = '/customers/customer-ids';
+getAllCustomerIds.PATH = '/app/DebtManagement/api/customers/customer-ids';

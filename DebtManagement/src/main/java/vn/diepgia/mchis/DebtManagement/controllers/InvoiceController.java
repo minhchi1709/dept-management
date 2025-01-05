@@ -1,14 +1,16 @@
 package vn.diepgia.mchis.DebtManagement.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.diepgia.mchis.DebtManagement.exceptions.DocumentNotFoundException;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceRequest;
 import vn.diepgia.mchis.DebtManagement.responses.BasicResponse;
 import vn.diepgia.mchis.DebtManagement.responses.InvoiceResponse;
@@ -20,7 +22,6 @@ import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -31,11 +32,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class InvoiceController {
     private final InvoiceService invoiceService;
     private final Mapper mapper;
-    private static final Logger LOGGER = Logger.getLogger(InvoiceController.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceController.class);
 
     @GetMapping
     public ResponseEntity<List<InvoiceResponse>> getAllInvoices() {
-        LOGGER.info("Get all invoices");
         return ResponseEntity.ok(
                 invoiceService.getAllInvoices()
                         .stream()
@@ -47,17 +47,17 @@ public class InvoiceController {
     @PostMapping(value = "/{id}/generate-pdf", produces = "application/pdf")
     public ResponseEntity<Resource> generateInvoicePdf(@PathVariable String id) {
         LOGGER.info("Generate invoice pdf ID: " + id);
-        String fileName = invoiceService.generateInvoicePdf(id);
-        File file = new File(fileName);
         try {
+            String fileName = invoiceService.generateInvoicePdf(id);
+            File file = new File(fileName);
             Resource resource = new UrlResource(file.toURI());
             if (resource.exists() || resource.isReadable()) {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8\"" + URLEncoder.encode(fileName, StandardCharsets.UTF_8) + "\"")
                         .body(resource);
             }
-        } catch (MalformedURLException e) {
-            LOGGER.severe(e.getMessage());
+        } catch (MalformedURLException | DocumentNotFoundException e) {
+            LOGGER.error(e.getMessage());
         }
         return ResponseEntity.badRequest().build();
     }
@@ -83,7 +83,7 @@ public class InvoiceController {
                             .build()
             );
         } catch(RuntimeException e) {
-            LOGGER.severe(e.toString());
+            LOGGER.error(e.toString());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
@@ -94,8 +94,8 @@ public class InvoiceController {
         try {
             LOGGER.info("Attempting to get invoice ID: " + id);
             return ResponseEntity.ok(mapper.toInvoiceResponse(invoiceService.getInvoiceById(id)));
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe(e.toString());
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.toString());
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
@@ -106,8 +106,8 @@ public class InvoiceController {
             LOGGER.info("Attempting to delete invoice ID: " + id);
             invoiceService.deleteInvoice(id);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe(e.toString());
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.toString());
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }

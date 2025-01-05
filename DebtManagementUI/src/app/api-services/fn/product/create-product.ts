@@ -30,4 +30,4 @@ export function createProduct(http: HttpClient, rootUrl: string, params: CreateP
   );
 }
 
-createProduct.PATH = '/products';
+createProduct.PATH = '/app/DebtManagement/api/products';

@@ -30,4 +30,4 @@ export function createCustomer(http: HttpClient, rootUrl: string, params: Create
   );
 }
 
-createCustomer.PATH = '/customers';
+createCustomer.PATH = '/app/DebtManagement/api/customers';

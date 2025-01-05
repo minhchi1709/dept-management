@@ -26,4 +26,4 @@ export function getAllInvoices(http: HttpClient, rootUrl: string, params?: GetAl
   );
 }
 
-getAllInvoices.PATH = '/invoices';
+getAllInvoices.PATH = '/app/DebtManagement/api/invoices';

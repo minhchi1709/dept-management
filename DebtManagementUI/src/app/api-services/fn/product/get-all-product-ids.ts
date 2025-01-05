@@ -25,4 +25,4 @@ export function getAllProductIds(http: HttpClient, rootUrl: string, params?: Get
   );
 }
 
-getAllProductIds.PATH = '/products/product-ids';
+getAllProductIds.PATH = '/app/DebtManagement/api/products/product-ids';

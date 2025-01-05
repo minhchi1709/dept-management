@@ -31,4 +31,4 @@ export function deleteSpecification(http: HttpClient, rootUrl: string, params: D
   );
 }
 
-deleteSpecification.PATH = '/products/{id}/specifications/{specification-id}';
+deleteSpecification.PATH = '/app/DebtManagement/api/products/{id}/specifications/{specification-id}';

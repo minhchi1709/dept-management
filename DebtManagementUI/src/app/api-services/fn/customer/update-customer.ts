@@ -32,4 +32,4 @@ export function updateCustomer(http: HttpClient, rootUrl: string, params: Update
   );
 }
 
-updateCustomer.PATH = '/customers/{id}';
+updateCustomer.PATH = '/app/DebtManagement/api/customers/{id}';

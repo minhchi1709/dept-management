@@ -51,7 +51,6 @@ export const MY_FORMATS = {
   imports: [
     NgForOf,
     NgIf,
-    NgbTooltip,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
@@ -101,8 +100,6 @@ export class CreateInvoiceComponent implements OnInit {
     private customerService: CustomerService,
     private observer: ObserverService
   ) {
-
-
     this.filteredCustomers = this.customerIds.slice()
     this.filteredProducts = this.productIds.slice()
   }
@@ -110,7 +107,7 @@ export class CreateInvoiceComponent implements OnInit {
   ngOnInit(): void {
     this.initialize()
 
-    this.observer.objectCreated$.subscribe(newObject => {
+    this.observer.object$.subscribe(newObject => {
       if (newObject) {
         this.initialize()
       }
@@ -204,7 +201,10 @@ export class CreateInvoiceComponent implements OnInit {
         this.error = ''
         this.msg = 'Thêm thành công'
         setTimeout(() => this.reset(), 1000)
-        this.observer.creationNotify(value)
+        this.observer.notify({
+          type: 'invoice',
+          reload: true
+        })
       },
       error: err => this.error = err.error
     })

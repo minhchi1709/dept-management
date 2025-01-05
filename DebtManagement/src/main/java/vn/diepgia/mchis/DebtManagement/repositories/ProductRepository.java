@@ -1,10 +1,11 @@
 package vn.diepgia.mchis.DebtManagement.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import vn.diepgia.mchis.DebtManagement.models.Product;
 
-import java.util.Optional;
+public interface ProductRepository extends MongoRepository<Product, String> {
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<Product> findByProductId(String productId);
+    @Query("{ 'productId' : ?0 }")
+    Product findByProductId(String productId);
 }

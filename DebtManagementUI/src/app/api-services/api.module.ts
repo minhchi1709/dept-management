@@ -6,7 +6,9 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProductService } from './services/product.service';
 import { CustomerService } from './services/customer.service';
+import { AuthenticationService } from './services/authentication.service';
 import { InvoiceService } from './services/invoice.service';
+import { UserService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.
@@ -18,7 +20,9 @@ import { InvoiceService } from './services/invoice.service';
   providers: [
     ProductService,
     CustomerService,
+    AuthenticationService,
     InvoiceService,
+    UserService,
     ApiConfiguration
   ],
 })

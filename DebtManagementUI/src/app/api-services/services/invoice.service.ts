@@ -30,7 +30,7 @@ export class InvoiceService extends BaseService {
   }
 
   /** Path part for operation `getAllInvoices()` */
-  static readonly GetAllInvoicesPath = '/invoices';
+  static readonly GetAllInvoicesPath = '/app/DebtManagement/api/invoices';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -55,7 +55,7 @@ export class InvoiceService extends BaseService {
   }
 
   /** Path part for operation `createInvoice()` */
-  static readonly CreateInvoicePath = '/invoices';
+  static readonly CreateInvoicePath = '/app/DebtManagement/api/invoices';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -84,7 +84,7 @@ export class InvoiceService extends BaseService {
   }
 
   /** Path part for operation `generateInvoicePdf()` */
-  static readonly GenerateInvoicePdfPath = '/invoices/{id}/generate-pdf';
+  static readonly GenerateInvoicePdfPath = '/app/DebtManagement/api/invoices/{id}/generate-pdf';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -109,7 +109,7 @@ export class InvoiceService extends BaseService {
   }
 
   /** Path part for operation `getInvoiceById()` */
-  static readonly GetInvoiceByIdPath = '/invoices/{id}';
+  static readonly GetInvoiceByIdPath = '/app/DebtManagement/api/invoices/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -138,7 +138,7 @@ export class InvoiceService extends BaseService {
   }
 
   /** Path part for operation `deleteInvoice()` */
-  static readonly DeleteInvoicePath = '/invoices/{id}';
+  static readonly DeleteInvoicePath = '/app/DebtManagement/api/invoices/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -167,7 +167,7 @@ export class InvoiceService extends BaseService {
   }
 
   /** Path part for operation `getAllInvoicesOfCustomer()` */
-  static readonly GetAllInvoicesOfCustomerPath = '/invoices/customers/{id}';
+  static readonly GetAllInvoicesOfCustomerPath = '/app/DebtManagement/api/invoices/customers/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

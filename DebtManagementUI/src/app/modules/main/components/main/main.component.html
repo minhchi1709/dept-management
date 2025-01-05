@@ -1,0 +1,27 @@
+<mat-tab-group mat-align-tabs="center" mat-stretch-tabs="false" id="tab-group">
+  <mat-tab label="Danh sách hóa đơn">
+    <ng-template matTabContent>
+      <app-invoice-list [input]="invoices"/>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Danh sách khách hàng">
+    <ng-template matTabContent>
+      <app-customer-list [input]="customers"/>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Danh sách sản phẩm">
+    <ng-template matTabContent>
+      <app-product-list [productList]="products"/>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Quản lý tài khoản">
+    <ng-template matTabContent>
+      <app-account-management/>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+<app-navigation/>
+<app-delete-confirmation/>
+<app-create-invoice/>
+<app-create-customer/>
+<app-create-product/>

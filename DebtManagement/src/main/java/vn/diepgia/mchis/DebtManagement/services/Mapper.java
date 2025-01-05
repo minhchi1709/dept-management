@@ -21,7 +21,7 @@ public class Mapper {
 
     private CustomerResponse toCustomerResponse(Customer c) {
         return CustomerResponse.builder()
-                .id(c.getId())
+                .customerId(c.getId())
                 .customerId(c.getCustomerId())
                 .name(c.getName())
                 .province(c.getProvince())

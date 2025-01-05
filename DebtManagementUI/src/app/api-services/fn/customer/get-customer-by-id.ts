@@ -29,4 +29,4 @@ export function getCustomerById(http: HttpClient, rootUrl: string, params: GetCu
   );
 }
 
-getCustomerById.PATH = '/customers/{id}';
+getCustomerById.PATH = '/app/DebtManagement/api/customers/{id}';

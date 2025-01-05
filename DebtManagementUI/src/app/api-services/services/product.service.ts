@@ -35,7 +35,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `getProductById()` */
-  static readonly GetProductByIdPath = '/products/{id}';
+  static readonly GetProductByIdPath = '/app/DebtManagement/api/products/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -64,7 +64,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `updateProduct()` */
-  static readonly UpdateProductPath = '/products/{id}';
+  static readonly UpdateProductPath = '/app/DebtManagement/api/products/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -93,7 +93,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `deleteProduct()` */
-  static readonly DeleteProductPath = '/products/{id}';
+  static readonly DeleteProductPath = '/app/DebtManagement/api/products/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -122,7 +122,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `getAllProducts()` */
-  static readonly GetAllProductsPath = '/products';
+  static readonly GetAllProductsPath = '/app/DebtManagement/api/products';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -147,7 +147,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `createProduct()` */
-  static readonly CreateProductPath = '/products';
+  static readonly CreateProductPath = '/app/DebtManagement/api/products';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -176,7 +176,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `getAllSpecifications()` */
-  static readonly GetAllSpecificationsPath = '/products/specifications';
+  static readonly GetAllSpecificationsPath = '/app/DebtManagement/api/products/specifications';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -201,7 +201,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `getAllProductIds()` */
-  static readonly GetAllProductIdsPath = '/products/product-ids';
+  static readonly GetAllProductIdsPath = '/app/DebtManagement/api/products/product-ids';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -226,7 +226,7 @@ export class ProductService extends BaseService {
   }
 
   /** Path part for operation `deleteSpecification()` */
-  static readonly DeleteSpecificationPath = '/products/{id}/specifications/{specification-id}';
+  static readonly DeleteSpecificationPath = '/app/DebtManagement/api/products/{id}/specifications/{specification-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

@@ -27,4 +27,4 @@ export function generateInvoicePdf(http: HttpClient, rootUrl: string, params: Ge
   );
 }
 
-generateInvoicePdf.PATH = '/invoices/{id}/generate-pdf';
+generateInvoicePdf.PATH = '/app/DebtManagement/api/invoices/{id}/generate-pdf';

@@ -5,6 +5,7 @@
 
 html, body {
   height: 100%;
+  font-size: 15px
 }
 body {
   margin: 0; font-family: sans-serif;
@@ -56,5 +57,23 @@ th {
 .form-field {
   width: 100%
 }
+
+.mat-mdc-tab-header {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+              0 0 15px rgba(138, 43, 226, 0.6), /* Purple */
+              0 0 30px rgba(255, 20, 147, 0.4), /* Pink */
+              0 0 45px rgba(255, 140, 0, 0.4);
+}
+
+div.mat-grid-tile-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+
 
 

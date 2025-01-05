@@ -26,4 +26,4 @@ export function getAllProducts(http: HttpClient, rootUrl: string, params?: GetAl
   );
 }
 
-getAllProducts.PATH = '/products';
+getAllProducts.PATH = '/app/DebtManagement/api/products';

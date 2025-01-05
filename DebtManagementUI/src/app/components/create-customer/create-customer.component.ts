@@ -44,7 +44,7 @@ export class CreateCustomerComponent implements  OnInit {
 
   ngOnInit(): void {
     this.observer.object$.subscribe(object => {
-      if (object) {
+      if (object && object.object && object.title && object.editMode) {
         this.customer = object.object
         this.id = this.customer.customerId || ''
         this.title = object.title
@@ -77,8 +77,9 @@ export class CreateCustomerComponent implements  OnInit {
           this.error = ''
           this.msg = ''
         }, 1000)
-        this.observer.updateNotify({
-          type: 'customer'
+        this.observer.notify({
+          type: 'customer',
+          reload: true
         })
       },
       error: err => {
@@ -114,7 +115,10 @@ export class CreateCustomerComponent implements  OnInit {
           this.error = ''
           this.msg = ''
         }, 1000)
-        this.observer.creationNotify(value)
+        this.observer.notify({
+          type: 'customer',
+          reload: true
+        })
       },
       error: err => {
         console.log(err)
@@ -124,7 +128,7 @@ export class CreateCustomerComponent implements  OnInit {
   }
 
   deleteCustomer() {
-    this.observer.deleteNotify({
+    this.observer.notify({
       type: 'customer',
       id: this.id
     })

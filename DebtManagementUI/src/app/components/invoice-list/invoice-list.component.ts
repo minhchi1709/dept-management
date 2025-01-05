@@ -25,6 +25,7 @@ import {InvoiceLineRequest} from "../../api-services/models/invoice-line-request
 import {MapperService} from "../../services/mapper-service/mapper.service";
 import {GraphComponent} from "../graph/graph.component";
 import {InvoiceResponse} from "../../api-services/models/invoice-response";
+import {ObserverService} from "../../services/observer-service/observer.service";
 
 @Component({
   selector: 'app-invoice-list',
@@ -82,12 +83,19 @@ export class InvoiceListComponent implements AfterViewInit, OnChanges, OnInit {
   constructor(
     protected dateService: DateService,
     protected currencyService: CurrencyService,
+    private observer: ObserverService,
     private mapper: MapperService
   ) {
   }
 
   ngOnInit(): void {
-        this.filter()
+      this.filter()
+      this.observer.object$.subscribe(object => {
+        if (object && object.type == 'invoice' && object.delete) {
+          this.invoiceIdQuery = ''
+          this.filter()
+        }
+      })
     }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -28,4 +28,4 @@ export function getAllInvoicesOfCustomer(http: HttpClient, rootUrl: string, para
   );
 }
 
-getAllInvoicesOfCustomer.PATH = '/invoices/customers/{id}';
+getAllInvoicesOfCustomer.PATH = '/app/DebtManagement/api/invoices/customers/{id}';

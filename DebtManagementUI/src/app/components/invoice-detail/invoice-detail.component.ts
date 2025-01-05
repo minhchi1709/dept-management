@@ -87,7 +87,7 @@ export class InvoiceDetailComponent implements OnInit, OnChanges {
   }
 
   deleteInvoice() {
-    this.observer.deleteNotify({
+    this.observer.notify({
       type: 'invoice',
       id: this.invoice.id
     })

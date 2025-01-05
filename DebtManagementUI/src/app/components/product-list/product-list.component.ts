@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {Product} from "../../api-services/models/product";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
@@ -30,7 +30,7 @@ import {Specification} from "../../api-services/models/specification";
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent implements AfterViewInit, OnChanges {
+export class ProductListComponent implements AfterViewInit, OnChanges, OnInit {
 
   products: Product[] = []
   dataSource = new MatTableDataSource<Product>([])
@@ -46,6 +46,15 @@ export class ProductListComponent implements AfterViewInit, OnChanges {
     private observer: ObserverService
   ) {
   }
+
+  ngOnInit(): void {
+        this.observer.object$.subscribe(object => {
+          if (object && object.type == 'product' && object.delete) {
+            this.idQuery = ''
+            this.filter()
+          }
+        })
+    }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.ngAfterViewInit()

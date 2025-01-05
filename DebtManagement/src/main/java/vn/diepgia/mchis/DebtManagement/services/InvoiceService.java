@@ -1,17 +1,17 @@
 package vn.diepgia.mchis.DebtManagement.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import vn.diepgia.mchis.DebtManagement.exceptions.DocumentNotFoundException;
 import vn.diepgia.mchis.DebtManagement.models.*;
-import vn.diepgia.mchis.DebtManagement.repositories.CustomerRepository;
-import vn.diepgia.mchis.DebtManagement.repositories.InvoiceRepository;
-import vn.diepgia.mchis.DebtManagement.repositories.ProductRepository;
-import vn.diepgia.mchis.DebtManagement.repositories.SpecificationRepository;
+import vn.diepgia.mchis.DebtManagement.repositories.*;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceRequest;
 import vn.diepgia.mchis.DebtManagement.requests.InvoiceLineRequest;
 
-import com.itextpdf.text.Document;
+import vn.diepgia.mchis.DebtManagement.services.sortingSercvices.SortInvoiceByDateDescendingService;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,26 +26,29 @@ public class InvoiceService {
     private final SpecificationRepository specificationRepository;
     private final PdfGeneratorService pdfGeneratorService;
     private final SortInvoiceByDateDescendingService sortInvoiceByDateDescendingService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
+    private final InvoiceLineRepository invoiceLineRepository;
 
     private Product getProductById(String id) {
-        return productRepository.findByProductId(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Mã sản phẩm %s không tồn tại!", id))
-        );
+        return productRepository.findByProductId(id);
     }
 
     private Customer getCustomerById(String id) {
-        return customerRepository.findByCustomerId(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Khách hàng %s không tồn tại!", id))
-        );
+        return customerRepository.findByCustomerId(id);
     }
 
     private InvoiceLine mapToInvoiceLine(
             InvoiceLineRequest request
     ) {
         Product product = getProductById(request.getProductId());
-        Specification specification = specificationRepository.findById(request.getSpecificationId()).orElseThrow(
-                () -> new EntityNotFoundException("Không tìm thấy quy cách")
-        );
+        Specification specification = null;
+        try {
+            specification = specificationRepository.findById(request.getSpecificationId()).orElseThrow(
+                    () -> new DocumentNotFoundException("Không tìm thấy quy cách")
+            );
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.getMessage());
+        }
         if (request.getNumberOfBoxes() < 1) {
             throw new RuntimeException("Số lượng thùng mỗi giao dịch phải lớn hơn 0");
         }
@@ -75,27 +78,26 @@ public class InvoiceService {
                 .stream()
                 .map(this::mapToInvoiceLine).toList();
         Customer customer = getCustomerById(request.getCustomerId());
-        Invoice invoice =
-                Invoice.builder()
-                        .id(request.getId())
+        Invoice invoice = Invoice.builder()
+                        .invoiceId(request.getId())
                         .customer(customer)
-                        .invoiceLines(invoiceLines)
+                        .invoiceLines(invoiceLineRepository.saveAll(invoiceLines))
                         .date(LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .build()
-        ;
+                        .build();
         invoice.calculateTotal();
+        invoiceRepository.save(invoice);
         customer.addInvoice(invoice);
         customerRepository.save(customer);
         return invoice.getId();
     }
 
-    public Invoice getInvoiceById(String id) {
+    public Invoice getInvoiceById(String id) throws DocumentNotFoundException {
         return invoiceRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Hóa đon %s không tồn tại!", id))
+                () -> new DocumentNotFoundException(String.format("Hóa đon %s không tồn tại!", id))
         );
     }
 
-    public void deleteInvoice(String id) {
+    public void deleteInvoice(String id) throws DocumentNotFoundException {
         Invoice invoice = getInvoiceById(id);
         List<Invoice> invoices = invoice.getCustomer().getInvoices();
         invoices.remove(invoice);
@@ -108,7 +110,7 @@ public class InvoiceService {
         return getCustomerById(id).getInvoices();
     }
 
-    public String generateInvoicePdf(String id) {
+    public String generateInvoicePdf(String id) throws DocumentNotFoundException {
         Invoice invoice = getInvoiceById(id);
         return pdfGeneratorService.generatePdf(invoice);
     }

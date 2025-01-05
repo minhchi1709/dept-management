@@ -30,7 +30,7 @@ export class CustomerService extends BaseService {
   }
 
   /** Path part for operation `getCustomerById()` */
-  static readonly GetCustomerByIdPath = '/customers/{id}';
+  static readonly GetCustomerByIdPath = '/app/DebtManagement/api/customers/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -59,7 +59,7 @@ export class CustomerService extends BaseService {
   }
 
   /** Path part for operation `updateCustomer()` */
-  static readonly UpdateCustomerPath = '/customers/{id}';
+  static readonly UpdateCustomerPath = '/app/DebtManagement/api/customers/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -88,7 +88,7 @@ export class CustomerService extends BaseService {
   }
 
   /** Path part for operation `deleteCustomer()` */
-  static readonly DeleteCustomerPath = '/customers/{id}';
+  static readonly DeleteCustomerPath = '/app/DebtManagement/api/customers/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -117,7 +117,7 @@ export class CustomerService extends BaseService {
   }
 
   /** Path part for operation `getAllCustomers()` */
-  static readonly GetAllCustomersPath = '/customers';
+  static readonly GetAllCustomersPath = '/app/DebtManagement/api/customers';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -142,7 +142,7 @@ export class CustomerService extends BaseService {
   }
 
   /** Path part for operation `createCustomer()` */
-  static readonly CreateCustomerPath = '/customers';
+  static readonly CreateCustomerPath = '/app/DebtManagement/api/customers';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -171,7 +171,7 @@ export class CustomerService extends BaseService {
   }
 
   /** Path part for operation `getAllCustomerIds()` */
-  static readonly GetAllCustomerIdsPath = '/customers/customer-ids';
+  static readonly GetAllCustomerIdsPath = '/app/DebtManagement/api/customers/customer-ids';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

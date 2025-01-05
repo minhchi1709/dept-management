@@ -1,0 +1,15 @@
+<div class="form">
+  <mat-form-field class="input">
+    <mat-label>Tên đăng nhập</mat-label>
+    <input type="text" matInput placeholder="dieptronghuy" [(ngModel)]="request.id" (keydown.enter)="login()">
+  </mat-form-field>
+
+  <mat-form-field class="input">
+    <mat-label>Mật khẩu</mat-label>
+    <input type="password" matInput placeholder="" [(ngModel)]="request.password" (keydown.enter)="login()">
+  </mat-form-field>
+
+  <button mat-fab extended (click)="login()" [disabled]="!request.id || !request.password">
+    Đăng nhập <mat-icon>login</mat-icon>
+  </button>
+</div>

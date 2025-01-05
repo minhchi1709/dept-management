@@ -17,12 +17,17 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8088/app/DebtManagement/api",
+      "url": "http://localhost:8088",
       "description": "Local ENV"
     }
   ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
-    "/products/{id}": {
+    "/app/DebtManagement/api/products/{id}": {
       "get": {
         "tags": [
           "Product"
@@ -118,7 +123,7 @@
         }
       }
     },
-    "/customers/{id}": {
+    "/app/DebtManagement/api/customers/{id}": {
       "get": {
         "tags": [
           "Customer"
@@ -214,7 +219,83 @@
         }
       }
     },
-    "/products": {
+    "/app/DebtManagement/api/auth/set-new-password": {
+      "put": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "setNewPassword",
+        "parameters": [
+          {
+            "name": "newPassword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/auth/change-password": {
+      "put": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "changePassword",
+        "parameters": [
+          {
+            "name": "oldPassword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "newPassword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/products": {
       "get": {
         "tags": [
           "Product"
@@ -265,7 +346,7 @@
         }
       }
     },
-    "/invoices": {
+    "/app/DebtManagement/api/invoices": {
       "get": {
         "tags": [
           "Invoice"
@@ -316,7 +397,7 @@
         }
       }
     },
-    "/invoices/{id}/generate-pdf": {
+    "/app/DebtManagement/api/invoices/{id}/generate-pdf": {
       "post": {
         "tags": [
           "Invoice"
@@ -347,7 +428,7 @@
         }
       }
     },
-    "/customers": {
+    "/app/DebtManagement/api/customers": {
       "get": {
         "tags": [
           "Customer"
@@ -398,7 +479,113 @@
         }
       }
     },
-    "/products/specifications": {
+    "/app/DebtManagement/api/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/users/admin": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "getAllAdmins",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/products/specifications": {
       "get": {
         "tags": [
           "Product"
@@ -421,7 +608,7 @@
         }
       }
     },
-    "/products/product-ids": {
+    "/app/DebtManagement/api/products/product-ids": {
       "get": {
         "tags": [
           "Product"
@@ -444,7 +631,7 @@
         }
       }
     },
-    "/invoices/{id}": {
+    "/app/DebtManagement/api/invoices/{id}": {
       "get": {
         "tags": [
           "Invoice"
@@ -502,7 +689,7 @@
         }
       }
     },
-    "/invoices/customers/{id}": {
+    "/app/DebtManagement/api/invoices/customers/{id}": {
       "get": {
         "tags": [
           "Invoice"
@@ -535,7 +722,7 @@
         }
       }
     },
-    "/customers/customer-ids": {
+    "/app/DebtManagement/api/customers/customer-ids": {
       "get": {
         "tags": [
           "Customer"
@@ -558,7 +745,75 @@
         }
       }
     },
-    "/products/{id}/specifications/{specification-id}": {
+    "/app/DebtManagement/api/auth": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/auth/admin": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "isAdmin",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BasicResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/DebtManagement/api/products/{id}/specifications/{specification-id}": {
       "delete": {
         "tags": [
           "Product"
@@ -758,6 +1013,108 @@
           }
         }
       },
+      "RegistrationRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "BasicResponseString": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "GrantedAuthority": {
+        "type": "object",
+        "properties": {
+          "authority": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "NORMAL_USER"
+            ]
+          },
+          "password": {
+            "type": "string"
+          },
+          "authorities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GrantedAuthority"
+            }
+          },
+          "username": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "accountNonExpired": {
+            "type": "boolean"
+          },
+          "credentialsNonExpired": {
+            "type": "boolean"
+          },
+          "accountNonLocked": {
+            "type": "boolean"
+          }
+        }
+      },
       "CustomerResponse": {
         "type": "object",
         "properties": {
@@ -803,6 +1160,23 @@
             "$ref": "#/components/schemas/CustomerResponse"
           }
         }
+      },
+      "BasicResponseBoolean": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT auth description",
+        "in": "header",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

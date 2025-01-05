@@ -1,11 +1,22 @@
 spring:
-  profiles:
-    active: dev
+  thymeleaf:
+    prefix: classpath:/static/
+  data:
+    mongodb:
+      uri: mongodb+srv://<username>:<password>@minhchi.wqpym.mongodb.net/?retryWrites=true&w=majority&appName=MinhChi
+      database: debt_management
   servlet:
     multipart:
       max-file-size: 50MB
+
 springdoc:
   default-produces-media-type: application/json
 application:
+  security:
+    jwt:
+      secret-key: 4972ce53f87d20c9d0e37db542ff3ad6a10d042d01f00d2b10a9cc8535ce82b2ddabcc1aee2ab841828168cdbc68d430bdae06fd506c5e0c966b48f5cfbc5f7fb853dba91d5b08dcdd86fad51a07abe8b2fceff113fa623ad89c09f1ca0fdfac7e5b88c5d0a1f343b90b70b0149df7eb16b54c5f61b42d5b557349dcc37a82a6da5cf8d273354ee043a5719c32ce2bea7b027ca4c46156ac856f3dd4f40ff658b27ca0d1361240c375d21494d5016b16ad192c0a4f81e366639f04e8fed2ef43f3097e1f180070e02f817de2e9534fe0bbf21735dd922dfedbdcca54c081a12109e97efff23df180db7f171f14801955afd0e43dcc8e696c2b99bfe73de58843
+      expiration-time: 43200000 # = 60 * 60 * 12 = 12 hours
   file: ./files/
   fonts: fonts/TimesNewRoman.ttf
+server:
+  port: 8088

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class BasicResponse {
-    private String response;
+public class BasicResponse<T> {
+    private T response;
 }

@@ -1,18 +1,19 @@
 package vn.diepgia.mchis.DebtManagement.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.diepgia.mchis.DebtManagement.exceptions.DocumentNotFoundException;
 import vn.diepgia.mchis.DebtManagement.models.Product;
 import vn.diepgia.mchis.DebtManagement.models.Specification;
 import vn.diepgia.mchis.DebtManagement.responses.BasicResponse;
 import vn.diepgia.mchis.DebtManagement.services.ProductService;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/app/DebtManagement/api/products")
@@ -20,23 +21,20 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private static final Logger LOGGER = Logger.getLogger(ProductController.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
-        LOGGER.info("Get all products");
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/product-ids")
     public ResponseEntity<List<String>> getAllProductIds() {
-        LOGGER.info("Get all product IDs");
         return ResponseEntity.ok(productService.getAllProductIds());
     }
 
     @GetMapping("/specifications")
     public ResponseEntity<List<Specification>> getAllSpecifications() {
-        LOGGER.info("Get all specifications");
         return ResponseEntity.ok(productService.getAllSpecifications());
     }
 
@@ -50,7 +48,7 @@ public class ProductController {
                             .build()
             );
         } catch (RuntimeException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -60,8 +58,8 @@ public class ProductController {
         try {
             LOGGER.info("Attempting to get product ID: " + id);
             return ResponseEntity.ok(productService.getProductById(id));
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe(e.getMessage());
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -78,8 +76,8 @@ public class ProductController {
                             .response(productService.updateProduct(id, request))
                             .build()
             );
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe(e.getMessage());
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -87,14 +85,14 @@ public class ProductController {
     @DeleteMapping("/{id}/specifications/{specification-id}")
     public ResponseEntity<?> deleteSpecification(
             @PathVariable("id") String id,
-            @PathVariable("specification-id") Integer specificationId
+            @PathVariable("specification-id") String specificationId
     ) {
         try {
             LOGGER.info("Attempting to delete specification ID: " + id + " of product ID: " + id);
             productService.deleteSpecification(id, specificationId);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe(e.getMessage());
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -107,8 +105,8 @@ public class ProductController {
             LOGGER.info("Attempting to delete product ID: " + id);
             productService.deleteProduct(id);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe(e.getMessage());
+        } catch (DocumentNotFoundException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

@@ -30,4 +30,4 @@ export function createInvoice(http: HttpClient, rootUrl: string, params: CreateI
   );
 }
 
-createInvoice.PATH = '/invoices';
+createInvoice.PATH = '/app/DebtManagement/api/invoices';

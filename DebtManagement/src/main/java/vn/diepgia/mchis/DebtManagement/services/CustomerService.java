@@ -1,10 +1,11 @@
 package vn.diepgia.mchis.DebtManagement.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vn.diepgia.mchis.DebtManagement.exceptions.DocumentNotFoundException;
 import vn.diepgia.mchis.DebtManagement.models.Customer;
 import vn.diepgia.mchis.DebtManagement.repositories.CustomerRepository;
+import vn.diepgia.mchis.DebtManagement.services.sortingSercvices.SortCustomerByAscendingIdOrderService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,15 +16,15 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final SortCustomerByAscendingIdOrder sortCustomerByAscendingIdOrder;
+    private final SortCustomerByAscendingIdOrderService sortCustomerByAscendingIdOrder;
 
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll().stream().sorted(sortCustomerByAscendingIdOrder).toList();
     }
 
     public String createCustomer(Customer request) {
-        if (customerRepository.findByCustomerId(request.getCustomerId()).isPresent()) {
-            throw new RuntimeException(String.format("Mã khách hàng %s đã tồn tại!", request.getId()));
+        if (customerRepository.findByCustomerId(request.getCustomerId()) != null) {
+            throw new RuntimeException(String.format("Mã khách hàng %s đã tồn tại!", request.getCustomerId()));
         }
         return customerRepository.save(
                 Customer.builder()
@@ -35,13 +36,15 @@ public class CustomerService {
         ).getCustomerId();
     }
 
-    public Customer getCustomerById(String id) {
-        return customerRepository.findByCustomerId(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Mã khách hàng %s không tồn tại!", id))
-        );
+    public Customer getCustomerById(String id) throws DocumentNotFoundException {
+        Customer customer = customerRepository.findByCustomerId(id);
+        if (customer == null) {
+            throw new DocumentNotFoundException(String.format("Mã khách hàng %s không tồn tại!", id));
+        }
+        return customer;
     }
 
-    public String updateCustomer(String id, Customer request) {
+    public String updateCustomer(String id, Customer request) throws DocumentNotFoundException {
         Customer customer = getCustomerById(id);
         customer.setCustomerId(request.getCustomerId());
         customer.setName(request.getName());
@@ -51,7 +54,7 @@ public class CustomerService {
     }
 
     public void deleteCustomer(String id) {
-        customerRepository.deleteByCustomerId(id);
+        customerRepository.deleteById(id);
     }
 
     public List<String> getAllCustomerIds() {

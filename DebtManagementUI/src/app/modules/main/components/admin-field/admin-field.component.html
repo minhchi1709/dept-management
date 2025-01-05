@@ -1,0 +1,73 @@
+<mat-grid-list cols="2" style="padding-bottom: 1rem">
+  <mat-grid-tile>
+    <div>
+      <h2 style="text-align: center">Đăng ký người dùng mới</h2>
+      <mat-form-field class="input">
+        <mat-label>Họ tên</mat-label>
+        <input type="text"
+               matInput
+               placeholder="Diệp Trọng Huy"
+               [(ngModel)]="request.name"
+               (keydown.enter)="registerUser()">
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Tên đăng nhập</mat-label>
+        <input type="text"
+               matInput
+               placeholder="dieptronghuy"
+               [(ngModel)]="request.id"
+               (keydown.enter)="registerUser()">
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Mật khẩu</mat-label>
+        <input type="password"
+               matInput
+               placeholder=""
+               [(ngModel)]="request.password"
+               (keydown.enter)="registerUser()">
+      </mat-form-field>
+
+      <button mat-fab
+              extended
+              (click)="registerUser()"
+              [disabled]="!request.id || !request.password || !request.name">
+        Đăng ký
+        <mat-icon>person_add</mat-icon>
+      </button>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div>
+      <h2 style="text-align: center">Thay đổi mật khẩu người dùng</h2>
+      <mat-form-field class="input">
+        <mat-label>Tên đăng nhập</mat-label>
+        <input type="text"
+               matInput
+               placeholder="dieptronghuy"
+               [(ngModel)]="userId"
+               (keydown.enter)="setNewPassword()">
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Mật khẩu</mat-label>
+        <input type="password"
+               matInput
+               placeholder=""
+               [(ngModel)]="newPassword"
+               (keydown.enter)="setNewPassword()">
+      </mat-form-field>
+
+      <button mat-fab
+              extended
+              (click)="setNewPassword()"
+              [disabled]="!userId || !newPassword">
+        Thay đổi mật khẩu
+        <mat-icon>published_with_changes</mat-icon>
+      </button>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-divider/>
+<app-user-list style="margin-top: 2rem" (deleteEvent)="deleteUser($event)" [setUsers]="users"/>

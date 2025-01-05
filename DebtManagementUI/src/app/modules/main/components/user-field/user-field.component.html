@@ -1,0 +1,27 @@
+<div class="form">
+  <h2 style="text-align: center">
+    Thay đổi mật khẩu
+  </h2>
+  <mat-form-field class="input">
+    <mat-label>Mật khẩu cũ</mat-label>
+    <input type="password"
+           matInput
+           [(ngModel)]="oldPassword"
+           (keydown.enter)="changePassword()">
+  </mat-form-field>
+  <mat-form-field class="input">
+    <mat-label>Mật khẩu mới</mat-label>
+    <input type="password"
+           matInput
+           [(ngModel)]="newPassword"
+           (keydown.enter)="changePassword()">
+  </mat-form-field>
+  <button mat-fab
+          style="margin-top: 1rem"
+          extended
+          (click)="changePassword()"
+          [disabled]="!oldPassword || !newPassword">
+    Thay đổi
+    <mat-icon>edit</mat-icon>
+  </button>
+</div>

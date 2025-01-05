@@ -32,4 +32,4 @@ export function updateProduct(http: HttpClient, rootUrl: string, params: UpdateP
   );
 }
 
-updateProduct.PATH = '/products/{id}';
+updateProduct.PATH = '/app/DebtManagement/api/products/{id}';

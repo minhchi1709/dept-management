@@ -31,8 +31,8 @@ export class DeleteConfirmationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.observer.delete$.subscribe(object => {
-      if (object) {
+    this.observer.object$.subscribe(object => {
+      if (object && object.type && object.id) {
         this.type = object.type
         this.id = object.id
       }
@@ -46,7 +46,11 @@ export class DeleteConfirmationComponent implements OnInit{
           id: this.id
         }).subscribe({
           next: value => {
-            this.observer.creationNotify(true)
+            this.observer.notify({
+              type: 'customer',
+              reload: true,
+              delete: true
+            })
           },
           error: err => console.log(err)
         })
@@ -57,7 +61,11 @@ export class DeleteConfirmationComponent implements OnInit{
           id: this.id
         }).subscribe({
           next: value => {
-            this.observer.creationNotify(true)
+            this.observer.notify({
+              type: 'product',
+              reload: true,
+              delete: true
+            })
           },
           error: err => console.log(err)
         })
@@ -68,7 +76,11 @@ export class DeleteConfirmationComponent implements OnInit{
           id: this.id
         }).subscribe({
           next: value => {
-            this.observer.creationNotify(true)
+            this.observer.notify({
+              type: 'invoice',
+              reload: true,
+              delete: true
+            })
           },
           error: err => console.log(err)
         })

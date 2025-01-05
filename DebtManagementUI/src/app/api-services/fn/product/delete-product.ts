@@ -29,4 +29,4 @@ export function deleteProduct(http: HttpClient, rootUrl: string, params: DeleteP
   );
 }
 
-deleteProduct.PATH = '/products/{id}';
+deleteProduct.PATH = '/app/DebtManagement/api/products/{id}';

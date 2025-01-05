@@ -29,4 +29,4 @@ export function getInvoiceById(http: HttpClient, rootUrl: string, params: GetInv
   );
 }
 
-getInvoiceById.PATH = '/invoices/{id}';
+getInvoiceById.PATH = '/app/DebtManagement/api/invoices/{id}';

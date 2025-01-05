@@ -29,4 +29,4 @@ export function deleteInvoice(http: HttpClient, rootUrl: string, params: DeleteI
   );
 }
 
-deleteInvoice.PATH = '/invoices/{id}';
+deleteInvoice.PATH = '/app/DebtManagement/api/invoices/{id}';

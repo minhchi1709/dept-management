@@ -2,13 +2,15 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors} from "@angular/common/http";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {CustomMatPaginatorIntl} from "./custom/CustomMatPaginator";
 import {MatPaginatorIntl} from "@angular/material/paginator";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
+import {httpInterceptor} from "./interceptors/http.interceptor";
+
 
 export const MY_FORMATS = {
   parse: {
@@ -35,6 +37,7 @@ export const appConfig: ApplicationConfig = {
         subscriptSizing: 'dynamic'
       }
     },
-    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
+    provideHttpClient(withInterceptors([httpInterceptor]))
   ]
 };

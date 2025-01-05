@@ -26,4 +26,4 @@ export function getAllCustomers(http: HttpClient, rootUrl: string, params?: GetA
   );
 }
 
-getAllCustomers.PATH = '/customers';
+getAllCustomers.PATH = '/app/DebtManagement/api/customers';

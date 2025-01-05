@@ -1,7 +1,7 @@
 package vn.diepgia.mchis.DebtManagement.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import vn.diepgia.mchis.DebtManagement.models.Specification;
 
-public interface SpecificationRepository extends JpaRepository<Specification, Integer> {
+public interface SpecificationRepository extends MongoRepository<Specification, String> {
 }

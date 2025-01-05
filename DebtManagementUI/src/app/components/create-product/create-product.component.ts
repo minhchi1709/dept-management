@@ -54,7 +54,7 @@ export class CreateProductComponent implements OnInit{
 
   ngOnInit(): void {
     this.observer.object$.subscribe(object => {
-      if (object) {
+      if (object && object.object && object.title && object.editMode) {
         this.product = object.object
         this.id = this.product.productId || ''
         this.title = object.title
@@ -105,7 +105,10 @@ export class CreateProductComponent implements OnInit{
         setTimeout(() => {
           this.msg = ''
         }, 1000)
-        this.observer.creationNotify(val)
+        this.observer.notify({
+          type: 'product',
+          reload: true
+        })
       },
       error: err => {
         this.error = err.error
@@ -183,7 +186,10 @@ export class CreateProductComponent implements OnInit{
         setTimeout(() => {
           this.msg = ''
         }, 1000)
-        this.observer.creationNotify(value)
+        this.observer.notify({
+          type: 'product',
+          reload: true
+        })
       },
       error: err => {
         this.error = err.error
@@ -192,7 +198,7 @@ export class CreateProductComponent implements OnInit{
   }
 
   deleteProduct() {
-    this.observer.deleteNotify({
+    this.observer.notify({
       type: 'product',
       id: this.id
     })

@@ -37,7 +37,6 @@ import {InvoiceRequest} from "../../api-services/models/invoice-request";
 export class CustomerListComponent implements AfterViewInit, OnChanges, OnInit {
   customers: Customer[] = []
   dataSource = new MatTableDataSource<Customer>([])
-  invoicesDataSource = new MatTableDataSource<Customer>([])
   columnsToDisplay = ['id', 'name', 'telephone', 'province'];
   filteredCustomers: Customer[] = []
   idQuery: string = ''
@@ -53,12 +52,12 @@ export class CustomerListComponent implements AfterViewInit, OnChanges, OnInit {
 
   ngOnInit(): void {
 
-    this.observer.objectUpdated$.subscribe(object => {
-      if (object && object.type == 'customer') {
+    this.observer.object$.subscribe(object => {
+      if (object && object.type == 'customer' && object.reload) {
         this.idQuery = ''
-        console.log('list')
       }
     })
+
     this.filter()
   }
 
@@ -87,7 +86,7 @@ export class CustomerListComponent implements AfterViewInit, OnChanges, OnInit {
       editMode: true
     })
     this.idQuery = customer.customerId || ''
-    //this.provinceQuery = customer.province != undefined ? customer.province : ''
+
     this.filter()
   }
 

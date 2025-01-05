@@ -29,4 +29,4 @@ export function getProductById(http: HttpClient, rootUrl: string, params: GetPro
   );
 }
 
-getProductById.PATH = '/products/{id}';
+getProductById.PATH = '/app/DebtManagement/api/products/{id}';

@@ -26,4 +26,4 @@ export function getAllSpecifications(http: HttpClient, rootUrl: string, params?:
   );
 }
 
-getAllSpecifications.PATH = '/products/specifications';
+getAllSpecifications.PATH = '/app/DebtManagement/api/products/specifications';

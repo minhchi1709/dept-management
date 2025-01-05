@@ -1,16 +1,17 @@
 package vn.diepgia.mchis.DebtManagement.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
+@Document(collection = "invoices")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,20 +19,15 @@ import java.util.List;
 public class Invoice {
     @Id
     private String id;
+
+    private String invoiceId;
     private LocalDate date;
     private Integer total;
 
-    @OneToMany(
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
+    @DBRef
     private List<InvoiceLine> invoiceLines;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(
-            name = "customer_id"
-    )
-    @JsonBackReference
+    @DBRef
     private Customer customer;
 
     @Override
